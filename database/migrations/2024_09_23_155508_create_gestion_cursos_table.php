@@ -25,6 +25,8 @@ return new class extends Migration
             $table->unsignedBigInteger('id_nombre_poa')->default(0);
             $table->timestamp('fechaRegistro')->useCurrent();
             $table->string('cupo', 50);
+
+            $table->foreign('id_nombre_poa')->references('id_poa')->on('poa');
         });
     }
 

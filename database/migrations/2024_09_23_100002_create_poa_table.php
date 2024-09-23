@@ -22,6 +22,8 @@ return new class extends Migration
             $table->string('Ocupacion_Productiva', 50);
             $table->timestamp('fecha_registro')->useCurrent();
             $table->string('estado', 50)->nullable();
+
+            $table->foreign('id_asignar_municipios')->references('id')->on('asignar_municipios');
         });
     }
 

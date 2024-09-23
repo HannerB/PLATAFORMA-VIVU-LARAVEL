@@ -14,9 +14,12 @@ return new class extends Migration
         Schema::create('concertaciones', function (Blueprint $table) {
             $table->id();
             $table->string('id_concertacion', 50);
-            $table->string('id_usuario', 50)->default('0');
-            $table->string('id_gestion_cursos', 50);
+            $table->unsignedBigInteger('id_usuario');
+            $table->unsignedBigInteger('id_gestion_cursos');
             $table->timestamp('fecha_registro')->useCurrent();
+
+            $table->foreign('id_usuario')->references('id')->on('users');
+            $table->foreign('id_gestion_cursos')->references('id_Gestion_Cursos')->on('gestion_cursos');
         });
     }
 

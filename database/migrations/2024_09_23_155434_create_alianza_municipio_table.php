@@ -21,6 +21,9 @@ return new class extends Migration
             $table->string('estado', 50);
             $table->unsignedBigInteger('poa_id');
             $table->timestamps();
+
+            $table->foreign('id_User')->references('id')->on('users');
+            $table->foreign('poa_id')->references('id_poa')->on('poa');
         });
     }
 

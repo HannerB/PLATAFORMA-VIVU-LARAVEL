@@ -17,6 +17,9 @@ return new class extends Migration
             $table->unsignedBigInteger('id_usuario')->nullable();
             $table->integer('estado')->default(1);
             $table->timestamp('fecha_reg')->nullable()->useCurrent();
+
+            $table->foreign('id_curso')->references('id')->on('cursos');
+            $table->foreign('id_usuario')->references('id')->on('users');
         });
     }
 

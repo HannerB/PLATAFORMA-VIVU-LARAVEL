@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('periodo', 50);
             $table->string('estado', 50);
             $table->timestamp('fecha_registro')->useCurrent();
+
+            $table->foreign('id_responsable')->references('id')->on('users');
         });
     }
 

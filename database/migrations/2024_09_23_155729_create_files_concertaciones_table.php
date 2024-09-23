@@ -16,9 +16,11 @@ return new class extends Migration
             $table->string('mes_concertacion', 50)->default('');
             $table->string('vigencia', 50);
             $table->string('ruta', 50)->default('');
-            $table->string('users_id', 50)->default('');
+            $table->unsignedBigInteger('users_id');
             $table->string('estado', 50)->default('');
             $table->string('tipo', 50);
+
+            $table->foreign('users_id')->references('id')->on('users');
         });
     }
 

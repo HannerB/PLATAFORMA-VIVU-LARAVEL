@@ -18,6 +18,9 @@ return new class extends Migration
             $table->timestamp('fecha_registro')->useCurrent();
             $table->string('modo_Documento', 50);
             $table->unsignedBigInteger('id_Docuemnto')->nullable();
+
+            $table->foreign('id_users')->references('id')->on('users');
+            $table->foreign('id_gestion_cursos')->references('id_Gestion_Cursos')->on('gestion_cursos');
         });
     }
 

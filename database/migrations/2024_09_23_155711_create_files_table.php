@@ -16,6 +16,8 @@ return new class extends Migration
             $table->unsignedBigInteger('id_users');
             $table->string('ruta', 50);
             $table->timestamp('fechaRegistro')->nullable()->useCurrent();
+
+            $table->foreign('id_users')->references('id')->on('users');
         });
     }
 

@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('no_inscritos_sofiaplus', function (Blueprint $table) {
+         Schema::create('no_inscritos_sofiaplus', function (Blueprint $table) {
             $table->id('id_sofiaPlus');
             $table->string('pais_nacimiento', 50)->default('');
             $table->string('departamento_nacimiento', 50)->default('');
@@ -20,9 +20,12 @@ return new class extends Migration
             $table->string('pais_cedula', 50)->default('');
             $table->string('departamento_cedula', 50)->default('');
             $table->string('municipio_cedula', 50)->default('');
-            $table->string('id_users', 50)->default('');
+            $table->unsignedBigInteger('id_users');
             $table->string('registro_sofia', 50)->default('');
-            $table->string('curso_id', 50)->default('');
+            $table->unsignedBigInteger('curso_id');
+
+            $table->foreign('id_users')->references('id')->on('users');
+            $table->foreign('curso_id')->references('id')->on('cursos');
         });
     }
 
