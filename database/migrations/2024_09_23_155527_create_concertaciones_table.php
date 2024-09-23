@@ -13,7 +13,10 @@ return new class extends Migration
     {
         Schema::create('concertaciones', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->string('id_concertacion', 50);
+            $table->string('id_usuario', 50)->default('0');
+            $table->string('id_gestion_cursos', 50);
+            $table->timestamp('fecha_registro')->useCurrent();
         });
     }
 

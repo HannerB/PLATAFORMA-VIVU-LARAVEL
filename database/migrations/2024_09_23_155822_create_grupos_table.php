@@ -13,7 +13,9 @@ return new class extends Migration
     {
         Schema::create('grupos', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->string('nombre_grupo', 100);
+            $table->string('tipo_archivo', 300);
+            $table->string('nombre_archivo', 500);
         });
     }
 

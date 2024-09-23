@@ -12,8 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('files_concertaciones', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+            $table->id('id_file_concertaciones');
+            $table->string('mes_concertacion', 50)->default('');
+            $table->string('vigencia', 50);
+            $table->string('ruta', 50)->default('');
+            $table->string('users_id', 50)->default('');
+            $table->string('estado', 50)->default('');
+            $table->string('tipo', 50);
         });
     }
 

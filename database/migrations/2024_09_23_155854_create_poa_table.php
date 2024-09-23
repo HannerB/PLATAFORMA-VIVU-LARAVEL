@@ -12,8 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('poa', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+            $table->id('id_poa');
+            $table->unsignedBigInteger('id_asignar_municipios');
+            $table->string('Nombre_Poa', 50);
+            $table->string('Persona_Enlace', 50)->default('0');
+            $table->string('Telefono_Enlace', 50);
+            $table->string('Correo_Enlace', 50);
+            $table->string('Poblacion', 50);
+            $table->string('Ocupacion_Productiva', 50);
+            $table->timestamp('fecha_registro')->useCurrent();
+            $table->string('estado', 50)->nullable();
         });
     }
 

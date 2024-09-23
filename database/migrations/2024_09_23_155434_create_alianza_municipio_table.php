@@ -12,7 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('alianza_municipio', function (Blueprint $table) {
-            $table->id();
+            $table->id('id_alianza');
+            $table->unsignedBigInteger('id_User');
+            $table->string('municipio', 50);
+            $table->string('periodo', 50);
+            $table->string('enlace_poblacion', 50);
+            $table->string('cargo', 50);
+            $table->string('estado', 50);
+            $table->unsignedBigInteger('poa_id');
             $table->timestamps();
         });
     }

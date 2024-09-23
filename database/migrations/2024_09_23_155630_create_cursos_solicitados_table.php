@@ -13,7 +13,12 @@ return new class extends Migration
     {
         Schema::create('cursos_solicitados', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->string('nombres', 100);
+            $table->string('apellidos', 200);
+            $table->string('telefono', 30);
+            $table->string('correo', 200);
+            $table->string('nombreCursoSolicitado', 200);
+            $table->text('fechaRegistro');
         });
     }
 

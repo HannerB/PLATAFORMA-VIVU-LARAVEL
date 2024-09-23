@@ -12,8 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('cursos_detalle', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+            $table->id('id_cursos_detalle');
+            $table->unsignedBigInteger('id_users');
+            $table->unsignedBigInteger('id_gestion_cursos');
+            $table->timestamp('fecha_registro')->useCurrent();
+            $table->string('modo_Documento', 50);
+            $table->unsignedBigInteger('id_Docuemnto')->nullable();
         });
     }
 

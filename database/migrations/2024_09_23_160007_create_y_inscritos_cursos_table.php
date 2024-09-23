@@ -13,7 +13,10 @@ return new class extends Migration
     {
         Schema::create('y_inscritos_cursos', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->unsignedBigInteger('id_curso')->nullable();
+            $table->unsignedBigInteger('id_usuario')->nullable();
+            $table->integer('estado')->default(1);
+            $table->timestamp('fecha_reg')->nullable()->useCurrent();
         });
     }
 

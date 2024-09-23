@@ -13,7 +13,9 @@ return new class extends Migration
     {
         Schema::create('files', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->unsignedBigInteger('id_users');
+            $table->string('ruta', 50);
+            $table->timestamp('fechaRegistro')->nullable()->useCurrent();
         });
     }
 

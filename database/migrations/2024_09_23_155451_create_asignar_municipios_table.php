@@ -13,7 +13,11 @@ return new class extends Migration
     {
         Schema::create('asignar_municipios', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->string('municipio', 50);
+            $table->unsignedBigInteger('id_responsable');
+            $table->string('periodo', 50);
+            $table->string('estado', 50);
+            $table->timestamp('fecha_registro')->useCurrent();
         });
     }
 
