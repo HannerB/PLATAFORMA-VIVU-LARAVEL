@@ -35,48 +35,66 @@ use App\Http\Controllers\AccesoRegistroController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('home');
 });
 
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-
+// tipos-usuarios
 Route::resource('tipos-usuario', YTipoUsuarioController::class);
 
+// inscritos-cursos
 Route::resource('inscritos-curso', YInscritosCursoController::class);
 
+// estados
 Route::resource('estados', YEstadoController::class);
 
+// t-juegos
 Route::resource('t-juego', TJuegoController::class);
 
+// poa
 Route::resource('poa', PoaController::class);
 
+// no-inscritos-sofiaplus
 Route::resource('no-inscritos-sofiaplu', NoInscritosSofiapluController::class);
 
+// grupos
 Route::resource('grupo', GrupoController::class);
 
+// gestion-cursos
 Route::resource('gestion-curso', GestionCursoController::class);
 
+// files-concertaciones
 Route::resource('files-concertacione', FilesConcertacioneController::class);
 
+// file
 Route::resource('file', FileController::class);
 
+// emprendimiento
 Route::resource('emprendimiento', EmprendimientoController::class);
 
+// cursos-solicitados
 Route::resource('cursos-solicitados', CursosSolicitadoController::class);
 
+// cursos-detalles
 Route::resource('cursos-detalle', CursosDetalleController::class);
 
+// cursos
 Route::resource('curso', CursoController::class);
 
+// concertaciones
 Route::resource('concertacione', ConcertacioneController::class);
 
+// competencia
 Route::resource('competencia', CompetenciaController::class);
 
+// asignar-municipio
 Route::resource('asignar-municipio', AsignarMunicipioController::class);
 
+// alianza-municipios
 Route::resource('alianza-municipio', AlianzaMunicipioController::class);
 
+// acceso-registros
 Route::resource('acceso-registro', AccesoRegistroController::class);
