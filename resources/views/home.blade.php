@@ -12,9 +12,9 @@
                 @endfor
             </ol>
             <div class="carousel-inner">
-                @foreach(['slider3.jpg', 'slider4.jpg', 'slider2.jpg', 'slider1.jpg', 'slider0.jpg'] as $index => $image)
+                @foreach(['slider0.jpg', 'slider1.jpg', 'slider2.jpg', 'slider3.jpg', 'slider4.jpg'] as $index => $image)
                     <div class="carousel-item @if($index == 0) active @endif">
-                        <img class="d-block w-100" src="{{ asset('assets/' . $image) }}" alt="Slide {{ $index + 1 }}">
+                        <img class="d-block w-100" src="{{ asset('img/carousel/' . $image) }}" alt="Slide {{ $index + 1 }}">
                         <div class="carousel-caption d-none d-md-block">
                             <h5></h5>
                             <p></p>
@@ -38,14 +38,14 @@
             </div>
             <div class="cardHomeContent">
                 <div class="cardHomeContentImage">
-                    <img src="{{ asset('assets/formacion_complementaria.jpg') }}" alt="Logosena" />
+                    <img src="{{ asset('img/formacion/formacion_complementaria.jpg') }}" alt="Logosena" />
                 </div>
                 <div class="cardHomeContentDescription">
                     <div class="description" style="font-size:17px;">
                         <p>La formación complementaria está orientada a preparar al aprendiz para desempeñar oficios y ocupaciones requeridas por los sectores productivos y sociales, con el fin de satisfacer necesidades del nuevo talento o de cualificación de trabajadores que estén o no vinculados al mundo laboral, a través de cursos cortos de formación.</p>
                     </div>
                     <div class="button">
-                        {{-- <a href="{{ route('cursos.registrados') }}" class="Link">Inscribirse</a> --}}
+                        <a href="" class="Link">Inscribirse</a>
                     </div>
                 </div>
             </div>
@@ -57,7 +57,7 @@
             </div>
             <div class="cardHomeContent">
                 <div class="cardHomeContentImage">
-                    <img src="{{ asset('assets/formacion_emprendimiento.jpg') }}" alt="Emprendimiento" />
+                    <img src="{{ asset('img/formacion/formacion_emprendimiento.jpg') }}" alt="Emprendimiento" />
                 </div>
                 <div class="cardHomeContentDescription">
                     <div class="description" style="font-size:17px;">
@@ -65,7 +65,7 @@
                         Con nuestra asesoría los emprendedores podran: identificar modelos de negocio, formulación de plan de negocio, creación de empresa, asesoría en la fase inicial, diagnóstico empresarial, desarrollo de nuevos productos, encadenamientos productivos y gestión para acceder a fuentes de financiación.</p>
                     </div>
                     <div class="button">
-                        {{-- <a href="{{ route('emprendimiento') }}" class="Link">Inscribirse</a> --}}
+                        <a href="" class="Link">Inscribirse</a>
                     </div>
                 </div>
             </div>
@@ -77,14 +77,14 @@
             </div>
             <div class="cardHomeContent">
                 <div class="cardHomeContentImage">
-                    <img src="{{ asset('assets/formacion_certificacion.jpg') }}" alt="Certificacion" />
+                    <img src="{{ asset('img/formacion/formacion_certificacion.jpg') }}" alt="Certificacion" />
                 </div>
                 <div class="cardHomeContentDescription">
                     <div class="description" style="font-size:17px;">
                         <p>La certificación por competencias u oficios es un programa orientado a desempeñar oficios y ocupaciones, basados en su experiencia y el desempeño actual de sus habilidades en un campo especifico, guiándolo a través del proceso de certificación, con lo cual le garantiza al sector productivo que es un aliado integral no solo competente en su saber y hacer, sino también en su ser.</p>
                     </div>
                     <div class="button">
-                        {{-- <a href="{{ route('certificacion.competencias') }}" class="Link">Inscribirse</a> --}}
+                        <a href="" class="Link">Inscribirse</a>
                     </div>
                 </div>
             </div>
