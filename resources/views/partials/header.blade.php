@@ -34,7 +34,7 @@
                             </a>
                         </li>
                         <li class="menu">
-                            <a href=" ">
+                            <a href="{{ route('cursos.index') }}">
                                 <i class="fa fa-list-ul fa-fw hidden-md hidden-lg" aria-hidden="true"></i> CURSOS
                             </a>
                         </li>

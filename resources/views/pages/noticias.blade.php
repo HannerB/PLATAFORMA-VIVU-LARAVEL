@@ -8,13 +8,15 @@
             <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
                 <ol class="carousel-indicators">
                     @for ($i = 0; $i < 5; $i++)
-                        <li class="bg-primary" data-target="#carouselExampleIndicators" data-slide-to="{{ $i }}" @if($i == 0) class="active" @endif></li>
+                        <li class="bg-primary" data-target="#carouselExampleIndicators" data-slide-to="{{ $i }}"
+                            @if ($i == 0) class="active" @endif></li>
                     @endfor
                 </ol>
-                <div class="carousel-inner">
-                    @foreach(['slider_0.jpg', 'slider_1.jpg', 'slider_2.jpg', 'img_4_.jpg', 'slider_4.jpg'] as $index => $image)
-                        <div class="carousel-item @if($index == 0) active @endif">
-                            <img class="d-block w-100" src="{{ asset('img/carousel/noticias/' . $image) }}" alt="Slide {{ $index + 1 }}">
+                <div class="carousel-inner"> <!-- Añadimos la clase h-75 para aumentar la altura general del carousel -->
+                    @foreach (['slider_0.jpg', 'slider_1.jpg', 'slider_2.jpg', 'img_4_.jpg', 'slider_4.jpg'] as $index => $image)
+                        <div class="carousel-item @if ($index == 0) active @endif">
+                            <img class="d-block w-100 h-100" src="{{ asset('img/carousel/noticias/' . $image) }}"
+                                alt="Slide {{ $index + 1 }}">
                             <div class="carousel-caption d-none d-md-block">
                                 <h5></h5>
                                 <p></p>
@@ -36,7 +38,7 @@
                 <div class="col-md-8">
                     @foreach ([['video' => 'video_1.mp4', 'title' => 'Emprendedora SENA'], ['video' => 'video_2.mp4', 'title' => 'Emprendedora SENA'], ['image' => 'imgPortada2.jpeg', 'title' => 'Apertura de la fería de emprendimiento población'], ['image' => 'imgPortada1.jpeg', 'title' => 'Cronograma de la fería de emprendimiento población']] as $item)
                         <div class="form-group col-md-6">
-                            <div class="card h-100" style="width: 22rem;">
+                            <div class="card h-100">
                                 @if (isset($item['video']))
                                     <div class="embed-responsive embed-responsive-16by9">
                                         <video width="400" controls>
@@ -58,15 +60,21 @@
                         </div>
                     @endforeach
                 </div>
-                <div class="col-md-4 overflow-auto">
-                    <iframe
-                        src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2FsenaAtlantico&tabs=timeline&width=340&height=500&small_header=true&adapt_container_width=true&hide_cover=false&show_facepile=true&appId"
-                        width="320" height="460" style="border:none;overflow:hidden; border-radius:10px;"
-                        scrolling="no" frameborder="0" allowfullscreen="true"
-                        allow="clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
-                    <a class="twitter-timeline" data-width="320" data-height="460" data-theme="dark"
-                        href="https://twitter.com/SenaAtlantico?ref_src=twsrc%5Etfw">Tweets by SenaAtlantico</a>
-                    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+                <div class="col-md-4 col-12 mt-3 mt-md-0 d-flex flex-column align-items-center">
+                    <div class="embed-responsive embed-responsive-4by3 mb-3 w-100" style="max-width: 340px;">
+                        <iframe
+                            src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2FsenaAtlantico&tabs=timeline&width=340&height=500&small_header=true&adapt_container_width=true&hide_cover=false&show_facepile=true&appId"
+                            width="320" height="460" style="border:none;overflow:hidden; border-radius:10px;"
+                            scrolling="no" frameborder="0" allowfullscreen="true"
+                            allow="clipboard-write; encrypted-media; picture-in-picture; web-share">
+                        </iframe>
+                    </div>
+                    <div class="embed-responsive embed-responsive-4by3 w-100" style="max-width: 340px;">
+                        <a class="twitter-timeline" data-width="340" data-height="460" data-theme="dark"
+                            href="https://twitter.com/SenaAtlantico?ref_src=twsrc%5Etfw">Tweets by SenaAtlantico
+                        </a>
+                        <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+                    </div>
                 </div>
             </div>
         </div>
@@ -75,7 +83,6 @@
 
 
 @push('scripts')
-    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
     <script>
         var dummyContent = $('.dummy-content').children(),
             i;

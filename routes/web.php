@@ -102,3 +102,6 @@ Route::resource('alianza-municipio', AlianzaMunicipioController::class);
 
 // acceso-registros
 Route::resource('acceso-registro', AccesoRegistroController::class);
+
+Route::get('/cursos', [CursoController::class, 'index'])->name('cursos.index');
+Route::post('/buscar-inscritos', [YInscritosCursoController::class, 'buscar'])->name('buscar.inscritos');

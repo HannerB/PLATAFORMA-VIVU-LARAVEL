@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Curso;
+use App\Http\Controllers\GestionCursoController;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Http\Requests\CursoRequest;
@@ -14,12 +15,13 @@ class CursoController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request): View
+    public function index(Request $request)
     {
-        $cursos = Curso::paginate();
+        // Obtén todos los cursos (puedes agregar paginación o filtros si es necesario)
+        $cursos = Curso::all();
 
-        return view('curso.index', compact('cursos'))
-            ->with('i', ($request->input('page', 1) - 1) * $cursos->perPage());
+        // Retorna la vista 'pages.cursos' y pasa la variable $cursos
+        return view('pages.cursos', compact('cursos'));
     }
 
     /**
