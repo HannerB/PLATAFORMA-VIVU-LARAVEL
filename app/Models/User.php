@@ -2,7 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
 /**
  * Class User
@@ -37,8 +38,11 @@ use Illuminate\Database\Eloquent\Model;
  * @package App
  * @mixin \Illuminate\Database\Eloquent\Builder
  */
-class User extends Model
+class User extends Authenticatable
 {
+    use Notifiable;
+
+    public $timestamps = false;
     
     protected $perPage = 20;
 
@@ -47,8 +51,44 @@ class User extends Model
      *
      * @var array<int, string>
      */
-    protected $fillable = ['nombres', 'apellidos', 'sexo', 'tipodocumento', 'documento', 'fechaNacimiento', 'telefono', 'tipoPoblacion', 'centro', 'municipio', 'email', 'rol', 'fechaRegistro', 'fecha_sesion', 'img', 'tipo_archivo'];
+    protected $fillable = [
+        'nombres',
+        'apellidos',
+        'sexo',
+        'tipodocumento',
+        'documento',
+        'fechaNacimiento',
+        'telefono',
+        'tipoPoblacion',
+        'centro',
+        'municipio',
+        'email',
+        'password',
+        'rol',
+        'fechaRegistro',
+        'fecha_sesion',
+        'img',
+        'tipo_archivo',
+    ];
 
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array<int, string>
+     */
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+    ];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

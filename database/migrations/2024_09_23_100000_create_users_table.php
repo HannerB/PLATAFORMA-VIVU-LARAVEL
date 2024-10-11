@@ -28,7 +28,7 @@ return new class extends Migration
             $table->string('rol', 200)->default('Administrador');
             $table->timestamp('fechaRegistro')->useCurrent();
             $table->date('fecha_sesion')->nullable();
-            $table->string('img', 500)->default('default-user-img.jpg');
+            $table->string('img')->nullable();
             $table->string('tipo_archivo', 100)->default('image/jpg');
         });
     }

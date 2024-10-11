@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\YTipoUsuarioController;
 use App\Http\Controllers\YInscritosCursoController;
 use App\Http\Controllers\YEstadoController;
@@ -33,16 +34,24 @@ use App\Http\Controllers\AccesoRegistroController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+Auth::routes();
 
 Route::get('/', function () {
     return view('home');
 });
 
+Route::get('/login', [App\Http\Controllers\UserController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [App\Http\Controllers\UserController::class, 'login']);
+Route::post('/logout', [App\Http\Controllers\UserController::class, 'logout'])->name('logout');
+
+Route::get('/register', [App\Http\Controllers\UserController::class, 'showRegistrationForm'])->name('register');
+Route::post('/register', [App\Http\Controllers\UserController::class, 'register']);
+
+Route::get('/perfil', [App\Http\Controllers\UserController::class, 'index'])->name('perfil')->middleware('auth');
+
 Route::get('/noticias', function () {
     return view('pages.noticias');
 })->name('noticias');
-
-Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
@@ -102,6 +111,10 @@ Route::resource('alianza-municipio', AlianzaMunicipioController::class);
 
 // acceso-registros
 Route::resource('acceso-registro', AccesoRegistroController::class);
+
+// usuario
+Route::resource('user', UserController::class);
+Route::get('/usuarios/{id}/imagen', [UserController::class, 'mostrarImagen'])->name('usuarios.imagen');
 
 Route::get('/cursos', [CursoController::class, 'index'])->name('cursos.index');
 Route::post('/buscar-inscritos', [YInscritosCursoController::class, 'buscar'])->name('buscar.inscritos');

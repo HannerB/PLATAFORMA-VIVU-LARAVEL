@@ -47,7 +47,7 @@
                             @auth
                                 <a href="{{ route('perfil') }}">
                                     <i class="fa fa-user fa-fw hidden-md hidden-lg" aria-hidden="true"></i>
-                                    {{ Auth::user()->nombre }} {{ Auth::user()->apellido }}
+                                    {{ Auth::user()->nombres }} {{ Auth::user()->apellidos }}
                                 </a>
                             <li class="hidden-xs hidden-sm">
                                 <img class="NavBar-Nav-icon btn-PopUpLogin" src="{{ asset('img/default-user-img.jpg') }}"
@@ -78,12 +78,12 @@
         <section class="full-width PopUpLogin PopUpLogin-2">
             <div class="full-width">
                 <a href="{{ route('perfil') }}"><i class="fa fa-user fa-fw" aria-hidden="true"></i> Tu perfil</a>
-                <a href="{{ route('poa') }}"><i class="fa fa-user fa-fw" aria-hidden="true"></i> Gestion Poa</a>
+                {{-- <a href="{{ route('poa') }}"><i class="fa fa-user fa-fw" aria-hidden="true"></i> Gestion Poa</a> --}}
                 @if (Auth::user()->rol == 1)
-                    <a href="{{ route('tablero') }}"><i class="fa fa-user fa-fw" aria-hidden="true"></i>Configuracion</a>
+                    {{-- <a href="{{ route('tablero') }}"><i class="fa fa-user fa-fw" aria-hidden="true"></i>Configuracion</a> --}}
                 @endif
-                <a href="{{ route('planeacion') }}"><i class="fa fa-user fa-fw" aria-hidden="true"></i> Planeacion</a>
-                <a href="{{ route('poa2') }}"><i class="fa fa-user fa-fw" aria-hidden="true"></i>Otros Poa asignados</a>
+                {{-- <a href="{{ route('planeacion') }}"><i class="fa fa-user fa-fw" aria-hidden="true"></i> Planeacion</a> --}}
+                {{-- <a href="{{ route('poa2') }}"><i class="fa fa-user fa-fw" aria-hidden="true"></i>Otros Poa asignados</a> --}}
                 <div role="separator" class="divider"></div>
                 <a href="{{ route('logout') }}"
                     onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
@@ -109,7 +109,7 @@
     </div>
 @endauth
 
-<!-- ====== Pie de pagina ======-->
+<!-- Pie de pagina -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css"
     integrity="sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi" crossorigin="anonymous">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"

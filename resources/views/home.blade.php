@@ -45,7 +45,7 @@
                         <p>La formación complementaria está orientada a preparar al aprendiz para desempeñar oficios y ocupaciones requeridas por los sectores productivos y sociales, con el fin de satisfacer necesidades del nuevo talento o de cualificación de trabajadores que estén o no vinculados al mundo laboral, a través de cursos cortos de formación.</p>
                     </div>
                     <div class="button">
-                        <a href="" class="Link">Inscribirse</a>
+                        <a href="{{ route('cursos.index') }}" class="Link">Inscribirse</a>
                     </div>
                 </div>
             </div>
@@ -64,8 +64,8 @@
                         <p>Fomentar la cultura del emprendimiento identificando oportunidades e ideas de negocio con valores diferenciales impulsando y fortaleciendo el desarrollo empresarial para la generación de ingresos y el empleo formal y decente. Acompañamos a los emprendedores en la creación y puesta en marcha de sus empresas. <br>
                         Con nuestra asesoría los emprendedores podran: identificar modelos de negocio, formulación de plan de negocio, creación de empresa, asesoría en la fase inicial, diagnóstico empresarial, desarrollo de nuevos productos, encadenamientos productivos y gestión para acceder a fuentes de financiación.</p>
                     </div>
-                    <div class="button">
-                        <a href="" class="Link">Inscribirse</a>
+                    <div class="button"> 
+                        <a href="{{ route('cursos.index') }}"  class="Link">Inscribirse</a>
                     </div>
                 </div>
             </div>
@@ -84,7 +84,7 @@
                         <p>La certificación por competencias u oficios es un programa orientado a desempeñar oficios y ocupaciones, basados en su experiencia y el desempeño actual de sus habilidades en un campo especifico, guiándolo a través del proceso de certificación, con lo cual le garantiza al sector productivo que es un aliado integral no solo competente en su saber y hacer, sino también en su ser.</p>
                     </div>
                     <div class="button">
-                        <a href="" class="Link">Inscribirse</a>
+                        <a href="{{ route('cursos.index') }}" class="Link">Inscribirse</a>
                     </div>
                 </div>
             </div>
