@@ -188,49 +188,13 @@
 
                     <div class="form-row mt-2">
                         <div class="form-group col-md-12">
-                            <button type="submit" id=""
-                                class="btn btn-outline-success btn-block">Registrar</button>
+                            <button type="submit" class="btn btn-outline-success btn-block">Registrar</button>
                             <a href="{{ route('login') }}" class="btn btn-outline-success btn-block mt-1">Iniciar
                                 sesión</a>
                         </div>
                     </div>
                 </form>
-
             </div>
         </div>
     </div>
-    </div>
 @endsection
-
-@push('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script>
-        $(document).ready(function() {
-            $('#frmGuardarAprendiz').submit(function(e) {
-                e.preventDefault();
-
-                $.ajax({
-                    url: $(this).attr('action'),
-                    method: $(this).attr('method'),
-                    data: $(this).serialize(),
-                    success: function(response) {
-                        if (response.success) {
-                            Swal.fire('Correcto!', 'Se ha guardado correctamente!', 'success');
-                            $('#frmGuardarAprendiz')[0].reset();
-                        } else {
-                            Swal.fire('Error!', response.message, 'error');
-                        }
-                    },
-                    error: function(xhr) {
-                        var errors = xhr.responseJSON.errors;
-                        var errorMessage = '';
-                        $.each(errors, function(key, value) {
-                            errorMessage += value[0] + '<br>';
-                        });
-                        Swal.fire('Error!', errorMessage, 'error');
-                    }
-                });
-            });
-        });
-    </script>
-@endpush

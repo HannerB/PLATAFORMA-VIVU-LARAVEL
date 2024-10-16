@@ -207,37 +207,35 @@ class UserController extends Controller
     public function register(Request $request): RedirectResponse
     {
         $request->validate([
-            'nombres' => 'required',
-            'apellidos' => 'required',
-            'sexo' => 'required',
-            'tipodocumento' => 'required',
-            'documento' => 'required|unique:users',
-            'fechaNacimiento' => 'required|date',
-            'telefono' => 'required',
-            'tipoPoblacion' => 'required',
-            'municipio' => 'required',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|min:8|confirmed',
+            'txtNombres' => 'required',
+            'txtApellidos' => 'required',
+            'txtSexo' => 'required',
+            'txtTipoDocumento' => 'required',
+            'txtDocumento' => 'required|unique:users,documento',
+            'txtFechaNacimiento' => 'required|date',
+            'txtTelefono' => 'required',
+            'txtTipoPoblacion' => 'required',
+            'txtMunicipio' => 'required',
+            'txtCorreo' => 'required|email|unique:users,email',
+            'txtPassword' => 'required|min:8',
         ]);
 
         $user = new User();
-        $user->nombres = $request->nombres;
-        $user->apellidos = $request->apellidos;
-        $user->sexo = $request->sexo;
-        $user->tipodocumento = $request->tipodocumento;
-        $user->documento = $request->documento;
-        $user->fechaNacimiento = $request->fechaNacimiento;
-        $user->telefono = $request->telefono;
-        $user->tipoPoblacion = $request->tipoPoblacion;
-        $user->centro = $request->centro;
-        $user->municipio = $request->municipio;
-        $user->email = $request->email;
-        $user->password = Hash::make($request->password);
+        $user->nombres = $request->txtNombres;
+        $user->apellidos = $request->txtApellidos;
+        $user->sexo = $request->txtSexo;
+        $user->tipodocumento = $request->txtTipoDocumento;
+        $user->documento = $request->txtDocumento;
+        $user->fechaNacimiento = $request->txtFechaNacimiento;
+        $user->telefono = $request->txtTelefono;
+        $user->tipoPoblacion = $request->txtTipoPoblacion;
+        $user->centro = $request->txtCentro; // Agregar el campo centro
+        $user->municipio = $request->txtMunicipio;
+        $user->email = $request->txtCorreo;
+        $user->password = Hash::make($request->txtPassword);
         $user->save();
 
-        Auth::login($user);
-
-        return redirect()->route('home');
+        return redirect()->route('login')->with('success', 'Se ha registrado correctamente.');
     }
 
     public function mostrarImagen($id)
