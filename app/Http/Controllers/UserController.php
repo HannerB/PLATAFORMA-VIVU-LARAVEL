@@ -45,6 +45,7 @@ class UserController extends Controller
             'municipio' => 'required',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:8',
+            'img' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         $user = new User();
@@ -60,11 +61,20 @@ class UserController extends Controller
         $user->municipio = $request->municipio;
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
+
+        if ($request->hasFile('img')) {
+            $imagen = $request->file('img');
+            $nombreImagen = time() . '_' . $imagen->getClientOriginalName();
+            $rutaImagen = $imagen->storeAs('public/img', $nombreImagen);
+            $user->img = $nombreImagen;
+        }
+
         $user->save();
 
         return redirect()->route('user.index')
             ->with('success', 'User created successfully.');
     }
+
 
     /**
      * Display the specified resource.
@@ -102,6 +112,7 @@ class UserController extends Controller
             'tipoPoblacion' => 'required',
             'municipio' => 'required',
             'email' => 'required|email|unique:users,email,' . $id,
+            'img' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         $user = User::find($id);
@@ -119,10 +130,9 @@ class UserController extends Controller
 
         if ($request->hasFile('img')) {
             $imagen = $request->file('img');
-            $contenidoImagen = file_get_contents($imagen->getRealPath());
-            $tipoArchivo = $imagen->getClientMimeType();
-            $user->img = $contenidoImagen;
-            $user->tipo_archivo = $tipoArchivo;
+            $nombreImagen = time() . '_' . $imagen->getClientOriginalName();
+            $rutaImagen = $imagen->storeAs('public/img', $nombreImagen);
+            $user->img = $nombreImagen;
         }
 
         if ($request->filled('password')) {
@@ -162,7 +172,7 @@ class UserController extends Controller
         $credentials = $request->only('documento', 'password');
 
         if (Auth::attempt($credentials)) {
-            return redirect()->intended('home');
+            return redirect()->route('welcome');
         }
 
         return back()->withErrors([
@@ -236,9 +246,7 @@ class UserController extends Controller
         $rutaImagen = storage_path('app/public/img/' . $user->img);
 
         if (file_exists($rutaImagen)) {
-            $contenidoImagen = file_get_contents($rutaImagen);
-            $tipoArchivo = mime_content_type($rutaImagen);
-            return response($contenidoImagen)->header('Content-Type', $tipoArchivo);
+            return response()->file($rutaImagen);
         }
 
         abort(404);

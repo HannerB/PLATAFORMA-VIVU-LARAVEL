@@ -55,6 +55,10 @@ Route::get('/noticias', function () {
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+Route::get('/welcome', function () {
+    return view('auth.welcome');
+})->name('welcome')->middleware('auth');
+
 // tipos-usuarios
 Route::resource('tipos-usuario', YTipoUsuarioController::class);
 
