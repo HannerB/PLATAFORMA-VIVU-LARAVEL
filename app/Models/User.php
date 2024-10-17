@@ -153,5 +153,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(\App\Models\YInscritosCurso::class, 'id', 'id_usuario');
     }
+
+    public function tipoUsuario()
+    {
+        return $this->belongsTo(YTipoUsuario::class, 'rol', 'id');
+    }
     
 }

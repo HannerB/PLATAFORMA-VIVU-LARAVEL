@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\YTipoUsuario;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -220,6 +221,8 @@ class UserController extends Controller
             'txtPassword' => 'required|min:8',
         ]);
 
+        $aprendizRol = YTipoUsuario::where('nombre', 'Aprendiz')->first();
+
         $user = new User();
         $user->nombres = $request->txtNombres;
         $user->apellidos = $request->txtApellidos;
@@ -229,10 +232,12 @@ class UserController extends Controller
         $user->fechaNacimiento = $request->txtFechaNacimiento;
         $user->telefono = $request->txtTelefono;
         $user->tipoPoblacion = $request->txtTipoPoblacion;
-        $user->centro = $request->txtCentro; // Agregar el campo centro
+        $user->centro = $request->txtCentro;
         $user->municipio = $request->txtMunicipio;
         $user->email = $request->txtCorreo;
         $user->password = Hash::make($request->txtPassword);
+        $user->rol = $aprendizRol ? $aprendizRol->id : null;
+        $user->fechaRegistro = now();
         $user->save();
 
         return redirect()->route('login')->with('success', 'Se ha registrado correctamente.');

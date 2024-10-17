@@ -15,15 +15,12 @@ use Illuminate\Database\Eloquent\Model;
  */
 class YTipoUsuario extends Model
 {
-    
-    protected $perPage = 20;
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
+    protected $table = 'y_tipo_usuario';
+    public $timestamps = false;
     protected $fillable = ['nombre'];
 
-
+    public function users()
+    {
+        return $this->hasMany(User::class, 'rol', 'id');
+    }
 }
