@@ -81,4 +81,10 @@ class EmprendimientoController extends Controller
         return Redirect::route('emprendimientos.index')
             ->with('success', 'Emprendimiento deleted successfully');
     }
+
+    public function consultar()
+    {
+        // Lógica para consultar emprendimientos
+        return view('emprendimiento.consultar');
+    }
 }

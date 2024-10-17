@@ -22,32 +22,36 @@ use App\Http\Controllers\CompetenciaController;
 use App\Http\Controllers\AsignarMunicipioController;
 use App\Http\Controllers\AlianzaMunicipioController;
 use App\Http\Controllers\AccesoRegistroController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\PlaneacionController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\CertificacionController;
 
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
 Auth::routes();
 
 Route::get('/', function () {
     return view('home');
 });
 
-Route::get('/login', [App\Http\Controllers\UserController::class, 'showLoginForm'])->name('login');
-Route::post('/login', [App\Http\Controllers\UserController::class, 'login']);
-Route::post('/logout', [App\Http\Controllers\UserController::class, 'logout'])->name('logout');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/perfil', [UserController::class, 'index'])->name('perfil');
+    
+    // Route::get('/tablero', [AdminController::class, 'tablero'])->name('tablero')->middleware('role:Administrador');
+    // Route::get('/planeacion', [PlaneacionController::class, 'index'])->name('planeacion')->middleware('role:Administrador,Orientador');
+    Route::get('/cursos-ofertados', [CursoController::class, 'ofertados'])->name('cursos.ofertados');
+    // Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware('role:Administrador');
+    Route::get('/poa', [PoaController::class, 'index'])->name('poa')->middleware('role:Orientador');
+    Route::get('/poa2', [PoaController::class, 'otrosPoaAsignados'])->name('poa2')->middleware('role:Orientador,Aprendiz');
+    Route::get('/emprendimiento/consultar', [EmprendimientoController::class, 'consultar'])->name('emprendimiento.consultar')->middleware('role:Gestor');
+    // Route::get('/certificaciones/consultar', [CertificacionController::class, 'consultar'])->name('certificaciones.consultar')->middleware('role:Certificación');
+});
 
-Route::get('/register', [App\Http\Controllers\UserController::class, 'showRegistrationForm'])->name('register');
-Route::post('/register', [App\Http\Controllers\UserController::class, 'register']);
+Route::get('/login', [UserController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [UserController::class, 'login']);
+Route::post('/logout', [UserController::class, 'logout'])->name('logout');
 
-Route::get('/perfil', [App\Http\Controllers\UserController::class, 'index'])->name('perfil')->middleware('auth');
+Route::get('/register', [UserController::class, 'showRegistrationForm'])->name('register');
+Route::post('/register', [UserController::class, 'register']);
 
 Route::get('/noticias', function () {
     return view('pages.noticias');
@@ -59,66 +63,28 @@ Route::get('/welcome', function () {
     return view('auth.welcome');
 })->name('welcome')->middleware('auth');
 
-// tipos-usuarios
+// Recursos
 Route::resource('tipos-usuario', YTipoUsuarioController::class);
-
-// inscritos-cursos
 Route::resource('inscritos-curso', YInscritosCursoController::class);
-
-// estados
 Route::resource('estados', YEstadoController::class);
-
-// t-juegos
 Route::resource('t-juego', TJuegoController::class);
-
-// poa
 Route::resource('poa', PoaController::class);
-
-// no-inscritos-sofiaplus
 Route::resource('no-inscritos-sofiaplu', NoInscritosSofiapluController::class);
-
-// grupos
 Route::resource('grupo', GrupoController::class);
-
-// gestion-cursos
 Route::resource('gestion-curso', GestionCursoController::class);
-
-// files-concertaciones
 Route::resource('files-concertacione', FilesConcertacioneController::class);
-
-// file
 Route::resource('file', FileController::class);
-
-// emprendimiento
 Route::resource('emprendimiento', EmprendimientoController::class);
-
-// cursos-solicitados
 Route::resource('cursos-solicitados', CursosSolicitadoController::class);
-
-// cursos-detalles
 Route::resource('cursos-detalle', CursosDetalleController::class);
-
-// cursos
 Route::resource('curso', CursoController::class);
-
-// concertaciones
 Route::resource('concertacione', ConcertacioneController::class);
-
-// competencia
 Route::resource('competencia', CompetenciaController::class);
-
-// asignar-municipio
 Route::resource('asignar-municipio', AsignarMunicipioController::class);
-
-// alianza-municipios
 Route::resource('alianza-municipio', AlianzaMunicipioController::class);
-
-// acceso-registros
 Route::resource('acceso-registro', AccesoRegistroController::class);
-
-// usuario
 Route::resource('user', UserController::class);
-Route::get('/usuarios/{id}/imagen', [UserController::class, 'mostrarImagen'])->name('usuarios.imagen');
 
+Route::get('/usuarios/{id}/imagen', [UserController::class, 'mostrarImagen'])->name('usuarios.imagen');
 Route::get('/cursos', [CursoController::class, 'index'])->name('cursos.index');
 Route::post('/buscar-inscritos', [YInscritosCursoController::class, 'buscar'])->name('buscar.inscritos');

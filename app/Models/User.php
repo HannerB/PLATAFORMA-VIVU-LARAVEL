@@ -27,6 +27,7 @@ use Illuminate\Notifications\Notifiable;
  * @property $img
  * @property $tipo_archivo
  *
+ * @property-read YTipoUsuario $tipoUsuario
  * @property AlianzaMunicipio[] $alianzaMunicipios
  * @property AsignarMunicipio[] $asignarMunicipios
  * @property Concertacione[] $concertaciones
@@ -43,7 +44,7 @@ class User extends Authenticatable
     use Notifiable;
 
     public $timestamps = false;
-    
+
     protected $perPage = 20;
 
     /**
@@ -97,7 +98,7 @@ class User extends Authenticatable
     {
         return $this->hasMany(\App\Models\AlianzaMunicipio::class, 'id', 'id_User');
     }
-    
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -105,7 +106,7 @@ class User extends Authenticatable
     {
         return $this->hasMany(\App\Models\AsignarMunicipio::class, 'id', 'id_responsable');
     }
-    
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -113,7 +114,7 @@ class User extends Authenticatable
     {
         return $this->hasMany(\App\Models\Concertacione::class, 'id', 'id_usuario');
     }
-    
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -121,7 +122,7 @@ class User extends Authenticatable
     {
         return $this->hasMany(\App\Models\CursosDetalle::class, 'id', 'id_users');
     }
-    
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -129,7 +130,7 @@ class User extends Authenticatable
     {
         return $this->hasMany(\App\Models\File::class, 'id', 'id_users');
     }
-    
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -137,7 +138,7 @@ class User extends Authenticatable
     {
         return $this->hasMany(\App\Models\FilesConcertacione::class, 'id', 'users_id');
     }
-    
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -145,7 +146,7 @@ class User extends Authenticatable
     {
         return $this->hasMany(\App\Models\NoInscritosSofiaplu::class, 'id', 'id_users');
     }
-    
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -154,9 +155,32 @@ class User extends Authenticatable
         return $this->hasMany(\App\Models\YInscritosCurso::class, 'id', 'id_usuario');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function tipoUsuario()
     {
         return $this->belongsTo(YTipoUsuario::class, 'rol', 'id');
     }
-    
+
+    /**
+     * Check if the user has an active alliance
+     *
+     * @return bool
+     */
+    // public function tieneAlianzaActiva()
+    // {
+    //     return $this->alianzaMunicipios()->where('estado', 'activo')->exists();
+    // }
+
+    /**
+     * Check if the user has a specific role
+     *
+     * @param string $role
+     * @return bool
+     */
+    public function hasRole($role)
+    {
+        return $this->tipoUsuario->nombre === $role;
+    }
 }
