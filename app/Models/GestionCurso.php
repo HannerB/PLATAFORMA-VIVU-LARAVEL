@@ -32,6 +32,10 @@ class GestionCurso extends Model
     
     protected $perPage = 20;
 
+    protected $table = 'gestion_cursos';
+
+    protected $primaryKey = 'id_Gestion_Cursos';
+
     /**
      * The attributes that are mass assignable.
      *

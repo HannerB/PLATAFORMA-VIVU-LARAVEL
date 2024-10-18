@@ -88,3 +88,9 @@ Route::resource('user', UserController::class);
 Route::get('/usuarios/{id}/imagen', [UserController::class, 'mostrarImagen'])->name('usuarios.imagen');
 Route::get('/cursos', [CursoController::class, 'index'])->name('cursos.index');
 Route::post('/buscar-inscritos', [YInscritosCursoController::class, 'buscar'])->name('buscar.inscritos');
+
+Route::get('/poa2', [PoaController::class, 'poa2'])->name('poa2');
+Route::post('/poa/update', [PoaController::class, 'update'])->name('poa.update');
+Route::post('/poa/delete', [PoaController::class, 'delete'])->name('poa.delete');
+
+Route::get('/poa/{poa}/cursos', [PoaController::class, 'showCursos'])->name('poa.cursos');

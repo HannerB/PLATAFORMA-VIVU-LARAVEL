@@ -46,11 +46,10 @@ class PoaController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id): View
+    public function showCursos(Poa $poa)
     {
-        $poa = Poa::find($id);
-
-        return view('poa.show', compact('poa'));
+        $cursos = $poa->gestionCursos;
+        return view('poa.cursos', compact('poa', 'cursos'));
     }
 
     /**
@@ -80,5 +79,11 @@ class PoaController extends Controller
 
         return Redirect::route('poas.index')
             ->with('success', 'Poa deleted successfully');
+    }
+
+    public function poa2()
+    {
+        $poas = Poa::with('gestionCursos')->get();
+        return view('pages.poa2', compact('poas'));
     }
 }

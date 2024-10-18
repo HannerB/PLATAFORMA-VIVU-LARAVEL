@@ -26,8 +26,10 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Poa extends Model
 {
-    
+
     protected $perPage = 20;
+
+    protected $table = 'poa';
 
     /**
      * The attributes that are mass assignable.
@@ -44,7 +46,7 @@ class Poa extends Model
     {
         return $this->belongsTo(\App\Models\AsignarMunicipio::class, 'id_asignar_municipios', 'id');
     }
-    
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -52,13 +54,13 @@ class Poa extends Model
     {
         return $this->hasMany(\App\Models\AlianzaMunicipio::class, 'id_poa', 'poa_id');
     }
-    
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function gestionCursos()
     {
-        return $this->hasMany(\App\Models\GestionCurso::class, 'id_poa', 'id_nombre_poa');
+        return $this->hasMany(\App\Models\GestionCurso::class, 'id_nombre_poa', 'id_poa');
     }
     
 }
