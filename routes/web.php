@@ -92,4 +92,5 @@ Route::post('/buscar-inscritos', [YInscritosCursoController::class, 'buscar'])->
 Route::get('/poa2', [PoaController::class, 'poa2'])->name('poa2');
 Route::post('/poa/update', [PoaController::class, 'update'])->name('poa.update');
 Route::post('/poa/delete', [PoaController::class, 'delete'])->name('poa.delete');
-Route::get('/poa/{id_poa}/Gestion_cursos2', [PoaController::class, 'Gestion_cursos2'])->name('poa.Gestion_cursos2');
+Route::get('/poa2/{id_poa}/Gestion_cursos2', [PoaController::class, 'Gestion_cursos2'])->name('poa.Gestion_cursos2');
+Route::get('/poa2/cursos/{id}/detalle', [PoaController::class, 'detalle'])->name('curso_detalle');
