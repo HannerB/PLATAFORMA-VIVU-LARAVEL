@@ -21,7 +21,9 @@ use Illuminate\Database\Eloquent\Model;
  */
 class CursosDetalle extends Model
 {
-    
+    protected $table = 'cursos_detalle';
+
+    protected $primaryKey = 'id_cursos_detalle';
     protected $perPage = 20;
 
     /**

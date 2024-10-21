@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Poa;
+use App\Models\GestionCurso;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Http\Requests\PoaRequest;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Log;
 
 class PoaController extends Controller
 {
@@ -46,10 +48,17 @@ class PoaController extends Controller
     /**
      * Display the specified resource.
      */
-    public function showCursos(Poa $poa)
+    public function Gestion_cursos2($id_poa)
     {
-        $cursos = $poa->gestionCursos;
-        return view('poa.cursos', compact('poa', 'cursos'));
+        try {
+            $gestionCursos = GestionCurso::where('id_nombre_poa', $id_poa)->with('inscritos')->get();
+            $poa = Poa::findOrFail($id_poa);
+            return view('poa.Gestion_cursos2', compact('gestionCursos', 'poa'));
+        } catch (\Exception $e) {
+            Log::error('Error en Gestion_cursos2: ' . $e->getMessage());
+            Log::error($e->getTraceAsString());
+            return back()->with('error', 'Error: ' . $e->getMessage());
+        }
     }
 
     /**

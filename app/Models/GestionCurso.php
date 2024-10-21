@@ -29,7 +29,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class GestionCurso extends Model
 {
-    
+
     protected $perPage = 20;
 
     protected $table = 'gestion_cursos';
@@ -51,7 +51,12 @@ class GestionCurso extends Model
     {
         return $this->belongsTo(\App\Models\Poa::class, 'id_nombre_poa', 'id_poa');
     }
-    
+
+    public function inscritos()
+    {
+        return $this->hasMany(CursosDetalle::class, 'id_gestion_cursos', 'id_Gestion_Cursos');
+    }
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -59,7 +64,7 @@ class GestionCurso extends Model
     {
         return $this->hasMany(\App\Models\Concertacione::class, 'id_Gestion_Cursos', 'id_gestion_cursos');
     }
-    
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -67,5 +72,4 @@ class GestionCurso extends Model
     {
         return $this->hasMany(\App\Models\CursosDetalle::class, 'id_Gestion_Cursos', 'id_gestion_cursos');
     }
-    
 }

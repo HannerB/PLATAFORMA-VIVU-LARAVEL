@@ -25,10 +25,10 @@
             <a href="{{ route('cursos.ofertados') }}"><i class="fa fa-cogs fa-fw" aria-hidden="true"></i> Cursos
                 ofertados</a> --}}
         @elseif(Auth::user()->tipoUsuario->nombre == 'Aprendiz')
-            @if (Auth::user()->tieneAlianzaActiva())
+            {{-- @if (Auth::user()->tieneAlianzaActiva()) --}}
                 <a href="{{ route('poa2') }}"><i class="fa fa-user fa-fw" aria-hidden="true"></i>Otros Poa
                     Asignados</a>
-            @endif
+            {{-- @endif --}}
         @endif
 
         <div role="separator" class="divider"></div>

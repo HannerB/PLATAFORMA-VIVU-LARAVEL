@@ -57,8 +57,8 @@
                                     <button class="gfgdelete btn btn-danger btn-xs" data-bs-toggle="modal"
                                         data-bs-target="#staticBackdropDelete">Borrar</button>
                                 @endif
-                                <a href="{{ route('poa.cursos', $poa->id_poa) }}" class="btn btn-warning btn-xs">Ver
-                                    Cursos</a>
+                                <a href="{{ route('poa.Gestion_cursos2', $poa->id_poa) }}"
+                                    class="btn btn-warning btn-xs">Ver Cursos</a>
                                 <button class="gfgenlace btn btn-success btn-xs" data-bs-toggle="modal"
                                     data-bs-target="#staticBackdropenlace">Enlace</button>
                             </td>
