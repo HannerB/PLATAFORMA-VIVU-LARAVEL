@@ -27,10 +27,10 @@
     @endif
 
     <div id="ocultar" style="display: none;">
-        <form action="{{ route('gestion-cursos.store') }}" method="POST">
+        {{-- <form action="{{ route('gestion-cursos.store') }}" method="POST">
             @csrf
             <!-- Aquí van los campos del formulario para crear nuevo curso -->
-        </form>
+        </form> --}}
     </div>
 
     <br><br>
@@ -83,9 +83,9 @@
     </table>
 </div>
 
-@include('partials.modals.gestion_curso_edit')
+{{-- @include('partials.modals.gestion_curso_edit')
 @include('partials.modals.gestion_curso_delete')
-@include('partials.modals.concertaciones')
+@include('partials.modals.concertaciones') --}}
 
 @endsection
 
