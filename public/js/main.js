@@ -61,4 +61,4 @@ $(document).on('ready', function(){
             scrollButtons:{ enable: true }
         });
     });
-})(jQuery);
+});

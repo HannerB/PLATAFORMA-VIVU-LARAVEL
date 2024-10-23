@@ -14918,8 +14918,3 @@ Copyright © 2018 Basecamp, LLC
 //
 
 
-
-
-
-
-$('#datepicker').datepicker();

@@ -72,6 +72,8 @@ Route::resource('poa', PoaController::class);
 Route::resource('no-inscritos-sofiaplu', NoInscritosSofiapluController::class);
 Route::resource('grupo', GrupoController::class);
 Route::resource('gestion-curso', GestionCursoController::class);
+Route::put('/gestion-cursos2/{id}', [GestionCursoController::class, 'update'])->name('gestion-cursos2.update');
+
 Route::resource('files-concertacione', FilesConcertacioneController::class);
 Route::resource('file', FileController::class);
 Route::resource('emprendimiento', EmprendimientoController::class);

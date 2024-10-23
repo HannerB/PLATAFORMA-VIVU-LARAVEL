@@ -142,11 +142,11 @@
                         <td class="gfginscritos">{{ $curso->inscritos->count() }}</td>
                         <td class="gfgid" style="display:none">{{ $curso->id_Gestion_Cursos }}</td>
                         <td>
-                            <button class="gfgselect btn btn-primary btn-xs" data-bs-toggle="modal"
-                                data-bs-target="#staticBackdrop">Editar</button>
+                            <button class="btn btn-primary" data-toggle="modal"
+                                data-target="#staticBackdrop">Editar</button>
                             @if (auth()->user()->alianza != 2)
-                                <button class="gfgdelete btn btn-danger btn-xs" data-bs-toggle="modal"
-                                    data-bs-target="#staticBackdropDelete">Borrar</button>
+                                <button class="btn btn-danger" data-toggle="modal"
+                                    data-target="#staticBackdropDelete">Borrar</button>
                             @endif
                             <a href="{{ route('curso_detalle', $curso->id_Gestion_Cursos) }}"
                                 class="btn btn-warning btn-xs">Ver Detalle</a>
@@ -157,66 +157,7 @@
         </table>
     </div>
 
-    {{-- @include('partials.modals.gestion_curso_edit')
-@include('partials.modals.gestion_curso_delete')
-@include('partials.modals.concertaciones') --}}
+    @include('partials.modals.gestion_curso.gestion_curso_edit')
+    {{-- @include('partials.modals.gestion_curso.gestion_curso_delete')
+    @include('partials.modals.gestion_curso.concertaciones') --}}
 @endsection
-
-@push('scripts')
-    <script>
-        function ocultar() {
-            $("#ocultar").toggle();
-        }
-
-        $(document).ready(function() {
-            $("#ocultar").toggle();
-
-            var busqueda = document.getElementById('buscar');
-            var table = document.getElementById("tabla").tBodies[0];
-
-            function buscaTabla() {
-                var texto = busqueda.value.toLowerCase();
-                var r = 0;
-                while (row = table.rows[r++]) {
-                    if (row.innerText.toLowerCase().indexOf(texto) !== -1)
-                        row.style.display = null;
-                    else
-                        row.style.display = 'none';
-                }
-            }
-
-            busqueda.addEventListener('keyup', buscaTabla);
-
-            $(".gfgselect").click(function() {
-                var row = $(this).closest("tr");
-                var data = {
-                    id: row.find(".gfgid").text(),
-                    Centro_Formacion: row.find(".gfgCentro_Formacion").text(),
-                    Nivel_Formacion: row.find(".gfgNivel_Formacion").text(),
-                    Nombre_Curso: row.find(".gfgNombre_Curso").text(),
-                    categoria: row.find(".gfgcategoria").text(),
-                    Mes_Poa: row.find(".gfgMes_Poa").text(),
-                    Estado_Curso: row.find(".gfgEstado_Curso").text(),
-                    Direccion: row.find(".gfgdireccion").text(),
-                    cupo: row.find(".gfgcupo").text()
-                };
-
-                // Llenar el formulario de edición con los datos
-                $("#editForm").attr("action", "/gestion-cursos2/" + data.id);
-                $("#editCentro_Formacion").val(data.Centro_Formacion);
-                $("#editNivel_Formacion").val(data.Nivel_Formacion);
-                $("#editNombre_Curso").val(data.Nombre_Curso);
-                $("#editcategoria").val(data.categoria);
-                $("#editMes_Poa").val(data.Mes_Poa);
-                $("#editEstado_Curso").val(data.Estado_Curso);
-                $("#editDireccion").val(data.Direccion);
-                $("#editcupo").val(data.cupo);
-            });
-
-            $(".gfgdelete").click(function() {
-                var id = $(this).closest("tr").find(".gfgid").text();
-                $("#deleteForm").attr("action", "/gestion-cursos2/" + id);
-            });
-        });
-    </script>
-@endpush

@@ -66,12 +66,28 @@ class GestionCursoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(GestionCursoRequest $request, GestionCurso $gestionCurso): RedirectResponse
+    public function update(Request $request, $id)
     {
-        $gestionCurso->update($request->validated());
+        try {
+            $gestionCurso = GestionCurso::findOrFail($id);
+            
+            $validated = $request->validate([
+                'Centro_Formacion' => 'required',
+                'Nivel_Formacion' => 'required',
+                'Nombre_Curso' => 'required',
+                'categoria' => 'required',
+                'Mes_Poa' => 'required',
+                'Estado_Curso' => 'required',
+                'Direccion' => 'required',
+                'cupo' => 'required|numeric'
+            ]);
 
-        return Redirect::route('gestion-cursos.index')
-            ->with('success', 'GestionCurso updated successfully');
+            $gestionCurso->update($validated);
+
+            return redirect()->back()->with('success', 'Curso actualizado exitosamente');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Error al actualizar el curso: ' . $e->getMessage());
+        }
     }
 
     public function destroy($id): RedirectResponse
