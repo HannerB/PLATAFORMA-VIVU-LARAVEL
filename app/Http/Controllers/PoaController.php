@@ -92,7 +92,7 @@ class PoaController extends Controller
 
     public function poa2()
     {
-        $poas = Poa::with('gestionCursos')->get();
+        $poas = Poa::with(['gestionCursos', 'asignarMunicipio'])->get();
         return view('pages.poa2', compact('poas'));
     }
 

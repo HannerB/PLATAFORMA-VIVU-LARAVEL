@@ -18,8 +18,21 @@
 
         <br>
 
+        <style>
+            /* Ajusta el tamaño del texto en la tabla */
+            .tabla-detalles {
+                font-size: 12px; /* Puedes ajustar el tamaño aquí */
+            }
+        
+            /* Ajusta el tamaño de los botones */
+            .btn-detalle {
+                font-size: 10px; /* Puedes ajustar el tamaño del texto de los botones aquí */
+                padding: 5px 10px; /* Ajusta el padding para cambiar el tamaño del botón */
+            }
+        </style>
+
         <div class="table-responsive">
-            <table id="tabla" class="table table-striped">
+            <table id="tabla" class="table table-striped tabla-detalles">
                 <thead>
                     <tr>
                         <th style="width:80px">Nombre Poa</th>
@@ -42,8 +55,8 @@
                     @foreach ($poas as $poa)
                         <tr>
                             <td class="gfgnombres">{{ $poa->Nombre_Poa }}</td>
-                            <td class="gfgmunicipio">{{ $poa->municipio }}</td>
-                            <td class="gfgperiodo">{{ $poa->periodo }}</td>
+                            <td class="gfgmunicipio">{{ $poa->primer_municipio_curso }}</td>
+                            <td class="gfgperiodo">{{ $poa->periodo_municipio }}</td>
                             <td class="gfgPersona_Enlace">{{ $poa->Persona_Enlace }}</td>
                             <td class="gfgTelefono_Enlace">{{ $poa->Telefono_Enlace }}</td>
                             <td class="gfgPoblacion">{{ $poa->Poblacion }}</td>
@@ -52,14 +65,14 @@
                             <td class="gfgid" style="display:none">{{ $poa->id_poa }}</td>
                             <td>
                                 @if (auth()->user()->alianza != 0)
-                                    <button class="gfgselect btn btn-primary btn-xs" data-bs-toggle="modal"
+                                    <button class="gfgselect btn btn-primary btn-xs btn-detalle" data-bs-toggle="modal"
                                         data-bs-target="#staticBackdrop">Editar</button>
-                                    <button class="gfgdelete btn btn-danger btn-xs" data-bs-toggle="modal"
+                                    <button class="gfgdelete btn btn-danger btn-xs btn-detalle" data-bs-toggle="modal"
                                         data-bs-target="#staticBackdropDelete">Borrar</button>
                                 @endif
                                 <a href="{{ route('poa.Gestion_cursos2', $poa->id_poa) }}"
-                                    class="btn btn-warning btn-xs">Ver Cursos</a>
-                                <button class="gfgenlace btn btn-success btn-xs" data-bs-toggle="modal"
+                                    class="btn btn-warning btn-xs btn-detalle">Ver Cursos</a>
+                                <button class="gfgenlace btn btn-success btn-xs btn-detalle" data-bs-toggle="modal"
                                     data-bs-target="#staticBackdropenlace">Enlace</button>
                             </td>
                         </tr>
@@ -76,12 +89,6 @@
 
 @push('scripts')
     <script src="https://unpkg.com/qrious@4.0.2/dist/qrious.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
-    <script>
-        @push('scripts')
-            <
-            script src = "https://unpkg.com/qrious@4.0.2/dist/qrious.js" >
-    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
     <script>
         $(document).ready(function() {
@@ -203,6 +210,4 @@
             $("#ocultar").toggle();
         });
     </script>
-@endpush
-</script>
 @endpush

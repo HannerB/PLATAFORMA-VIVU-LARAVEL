@@ -62,5 +62,15 @@ class Poa extends Model
     {
         return $this->hasMany(\App\Models\GestionCurso::class, 'id_nombre_poa', 'id_poa');
     }
-    
+
+    public function getPrimerMunicipioCursoAttribute()
+    {
+        return $this->gestionCursos()->first()->Municipio_Curso ?? 'No asignado';
+    }
+
+    // Método para obtener el periodo del municipio asignado
+    public function getPeriodoMunicipioAttribute()
+    {
+        return $this->asignarMunicipio->periodo ?? 'No asignado';
+    }
 }
