@@ -158,6 +158,6 @@
     </div>
 
     @include('partials.modals.gestion_curso.gestion_curso_edit')
-    {{-- @include('partials.modals.gestion_curso.gestion_curso_delete')
-    @include('partials.modals.gestion_curso.concertaciones') --}}
+    @include('partials.modals.gestion_curso.gestion_curso_delete')
+    @include('partials.modals.gestion_curso.gestion_curso_concertaciones')
 @endsection

@@ -26,6 +26,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PlaneacionController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CertificacionController;
+use App\Models\GestionCurso;
 
 Auth::routes();
 
@@ -35,7 +36,7 @@ Route::get('/', function () {
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/perfil', [UserController::class, 'index'])->name('perfil');
-    
+
     // Route::get('/tablero', [AdminController::class, 'tablero'])->name('tablero')->middleware('role:Administrador');
     // Route::get('/planeacion', [PlaneacionController::class, 'index'])->name('planeacion')->middleware('role:Administrador,Orientador');
     Route::get('/cursos-ofertados', [CursoController::class, 'ofertados'])->name('cursos.ofertados');
@@ -72,7 +73,9 @@ Route::resource('poa', PoaController::class);
 Route::resource('no-inscritos-sofiaplu', NoInscritosSofiapluController::class);
 Route::resource('grupo', GrupoController::class);
 Route::resource('gestion-curso', GestionCursoController::class);
-Route::put('/gestion-cursos2/{id}', [GestionCursoController::class, 'update'])->name('gestion-cursos2.update');
+Route::get('/gestion-cursos/{id}/edit', [GestionCursoController::class, 'edit'])->name('gestion-cursos.edit');
+Route::put('/gestion-cursos/{id}', [GestionCursoController::class, 'update'])->name('gestion-cursos.update');
+Route::get('/poa2/{id_poa}/Gestion_cursos2', [GestionCursoController::class, 'Gestion_cursos2'])->name('poa.Gestion_cursos2');
 
 Route::resource('files-concertacione', FilesConcertacioneController::class);
 Route::resource('file', FileController::class);
@@ -94,5 +97,4 @@ Route::post('/buscar-inscritos', [YInscritosCursoController::class, 'buscar'])->
 Route::get('/poa2', [PoaController::class, 'poa2'])->name('poa2');
 Route::post('/poa/update', [PoaController::class, 'update'])->name('poa.update');
 Route::post('/poa/delete', [PoaController::class, 'delete'])->name('poa.delete');
-Route::get('/poa2/{id_poa}/Gestion_cursos2', [PoaController::class, 'Gestion_cursos2'])->name('poa.Gestion_cursos2');
 Route::get('/poa2/cursos/{id}/detalle', [PoaController::class, 'detalle'])->name('curso_detalle');

@@ -48,18 +48,7 @@ class PoaController extends Controller
     /**
      * Display the specified resource.
      */
-    public function Gestion_cursos2($id_poa)
-    {
-        try {
-            $gestionCursos = GestionCurso::where('id_nombre_poa', $id_poa)->with('inscritos')->get();
-            $poa = Poa::where('id_poa', $id_poa)->firstOrFail();
-            return view('poa.Gestion_cursos2', compact('gestionCursos', 'poa'));
-        } catch (\Exception $e) {
-            Log::error('Error en Gestion_cursos2: ' . $e->getMessage());
-            Log::error($e->getTraceAsString());
-            return back()->with('error', 'Error: ' . $e->getMessage());
-        }
-    }
+
 
     /**
      * Show the form for editing the specified resource.

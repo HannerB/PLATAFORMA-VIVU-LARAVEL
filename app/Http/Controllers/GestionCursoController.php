@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\GestionCurso;
+use App\Models\Poa;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Http\Requests\GestionCursoRequest;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Log;
 
 class GestionCursoController extends Controller
 {
@@ -70,7 +72,7 @@ class GestionCursoController extends Controller
     {
         try {
             $gestionCurso = GestionCurso::findOrFail($id);
-            
+
             $validated = $request->validate([
                 'Centro_Formacion' => 'required',
                 'Nivel_Formacion' => 'required',
@@ -90,11 +92,33 @@ class GestionCursoController extends Controller
         }
     }
 
-    public function destroy($id): RedirectResponse
+    public function Gestion_cursos2($id_poa)
     {
-        GestionCurso::find($id)->delete();
+        try {
+            $gestionCursos = GestionCurso::where('id_nombre_poa', $id_poa)->with('inscritos')->get();
+            $poa = Poa::where('id_poa', $id_poa)->firstOrFail();
+            return view('poa.Gestion_cursos2', compact('gestionCursos', 'poa'));
+        } catch (\Exception $e) {
+            Log::error('Error en Gestion_cursos2: ' . $e->getMessage());
+            Log::error($e->getTraceAsString());
+            return back()->with('error', 'Error: ' . $e->getMessage());
+        }
+    }
 
-        return Redirect::route('gestion-cursos.index')
-            ->with('success', 'GestionCurso deleted successfully');
+    public function destroy($id)
+    {
+        try {
+            $curso = GestionCurso::findOrFail($id);
+            $curso->delete();
+            return redirect()->back()->with('success', 'Curso eliminado exitosamente');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Error al eliminar el curso: ' . $e->getMessage());
+        }
+    }
+
+    public function getConcertaciones($id)
+    {
+        $gestionCurso = GestionCurso::with('concertaciones.user')->findOrFail($id);
+        return response()->json($gestionCurso->concertaciones);
     }
 }
