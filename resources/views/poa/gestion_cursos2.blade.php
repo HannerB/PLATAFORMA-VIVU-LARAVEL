@@ -2,6 +2,7 @@
 
 @section('content')
     <div class="container contenedor">
+        {{-- Mensajes de Alerta --}}
         @if (session('status'))
             <div class="alert alert-success alert-dismissible" style="margin-top:20px;">
                 <button type="button" class="close" data-dismiss="alert">&times;</button>

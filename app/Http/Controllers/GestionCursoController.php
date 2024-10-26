@@ -86,9 +86,11 @@ class GestionCursoController extends Controller
 
             $gestionCurso->update($validated);
 
-            return redirect()->back()->with('success', 'Curso actualizado exitosamente');
+            return redirect()->route('poa.Gestion_cursos2', $gestionCurso->id_nombre_poa)
+                ->with('status', 'Curso actualizado exitosamente');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Error al actualizar el curso: ' . $e->getMessage());
+            return redirect()->back()
+                ->with('error', 'Error al actualizar el curso: ' . $e->getMessage());
         }
     }
 

@@ -34,6 +34,8 @@ class GestionCurso extends Model
 
     protected $table = 'gestion_cursos';
 
+    public $timestamps = false; 
+
     protected $primaryKey = 'id_Gestion_Cursos';
 
     /**
