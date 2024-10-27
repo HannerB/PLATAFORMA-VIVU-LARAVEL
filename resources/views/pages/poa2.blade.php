@@ -21,13 +21,16 @@
         <style>
             /* Ajusta el tamaño del texto en la tabla */
             .tabla-detalles {
-                font-size: 12px; /* Puedes ajustar el tamaño aquí */
+                font-size: 12px;
+                /* Puedes ajustar el tamaño aquí */
             }
-        
+
             /* Ajusta el tamaño de los botones */
             .btn-detalle {
-                font-size: 10px; /* Puedes ajustar el tamaño del texto de los botones aquí */
-                padding: 5px 10px; /* Ajusta el padding para cambiar el tamaño del botón */
+                font-size: 10px;
+                /* Puedes ajustar el tamaño del texto de los botones aquí */
+                padding: 5px 10px;
+                /* Ajusta el padding para cambiar el tamaño del botón */
             }
         </style>
 
@@ -64,16 +67,16 @@
                             <td class="gfgcursos">{{ $poa->gestionCursos->count() }}</td>
                             <td class="gfgid" style="display:none">{{ $poa->id_poa }}</td>
                             <td>
-                                @if (auth()->user()->alianza != 0)
-                                    <button class="gfgselect btn btn-primary btn-xs btn-detalle" data-bs-toggle="modal"
-                                        data-bs-target="#staticBackdrop">Editar</button>
-                                    <button class="gfgdelete btn btn-danger btn-xs btn-detalle" data-bs-toggle="modal"
-                                        data-bs-target="#staticBackdropDelete">Borrar</button>
+                                @if (auth()->user()->alianza != 1)
+                                    <button class="gfgselect btn btn-primary btn-xs btn-detalle" data-toggle="modal"
+                                        data-target="#staticBackdrop">Editar</button>
+                                    <button class="gfgdelete btn btn-danger btn-xs btn-detalle" data-toggle="modal"
+                                        data-target="#staticBackdropDelete">Borrar</button>
                                 @endif
                                 <a href="{{ route('poa.Gestion_cursos2', $poa->id_poa) }}"
                                     class="btn btn-warning btn-xs btn-detalle">Ver Cursos</a>
-                                <button class="gfgenlace btn btn-success btn-xs btn-detalle" data-bs-toggle="modal"
-                                    data-bs-target="#staticBackdropenlace">Enlace</button>
+                                <button class="gfgenlace btn btn-success btn-xs btn-detalle" data-toggle="modal"
+                                    data-target="#staticBackdropenlace">Enlace</button>
                             </td>
                         </tr>
                     @endforeach
@@ -86,128 +89,3 @@
     @include('partials.modals.poa_delete')
     @include('partials.modals.poa_enlace')
 @endsection
-
-@push('scripts')
-    <script src="https://unpkg.com/qrious@4.0.2/dist/qrious.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            var busqueda = document.getElementById('buscar');
-            var table = document.getElementById("tabla").tBodies[0];
-
-            function buscaTabla() {
-                var texto = busqueda.value.toLowerCase();
-                var r = 0;
-                while (row = table.rows[r++]) {
-                    if (row.innerText.toLowerCase().indexOf(texto) !== -1)
-                        row.style.display = null;
-                    else
-                        row.style.display = 'none';
-                }
-            }
-
-            busqueda.addEventListener('keyup', buscaTabla);
-
-            $(".gfgselect").click(function() {
-                var row = $(this).closest("tr");
-                var data = {
-                    id: row.find(".gfgid").text(),
-                    nombres: row.find(".gfgnombres").text(),
-                    persona_enlace: row.find(".gfgPersona_Enlace").text(),
-                    telefono_enlace: row.find(".gfgTelefono_Enlace").text(),
-                    ocupacion_productiva: row.find(".gfgOcupacion_Productiva").text(),
-                    municipio: row.find(".gfgmunicipio").text(),
-                    poblacion: row.find(".gfgPoblacion").text()
-                };
-
-                $("#gfgnombres").val(data.nombres);
-                $("#gfgPersona_Enlace").val(data.persona_enlace);
-                $("#gfgTelefono_Enlace").val(data.telefono_enlace);
-                $("#gfgmunicipio").val(data.municipio);
-                $("#gfgOcupacion_Productiva").val(data.ocupacion_productiva);
-                $("#gfgPoblacion").val(data.poblacion);
-                $("#poa_id").val(data.id);
-            });
-
-            $("#formActualizarPoa").submit(function(e) {
-                e.preventDefault();
-                var formData = $(this).serialize();
-                $.ajax({
-                    url: "{{ route('poa.update') }}",
-                    type: "POST",
-                    data: formData,
-                    success: function(response) {
-                        if (response.success) {
-                            alert('POA actualizado con éxito');
-                            location.reload();
-                        } else {
-                            alert('Error al actualizar POA');
-                        }
-                    }
-                });
-            });
-
-            $(".gfgenlace").click(function() {
-                var id = $(this).closest("tr").find(".gfgid").text();
-                var enlace = "https://www.vivu.com.co/vivuWeb/cursosReg.php?poa=" + id;
-                $("#enlaceCompartir").val(enlace);
-
-                new QRious({
-                    element: document.getElementById('qrCode'),
-                    value: enlace
-                });
-            });
-
-            $("#downloadQR").click(function() {
-                var canvas = document.getElementById('qrCode');
-                var image = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
-                var link = document.createElement('a');
-                link.download = "QR_POA.png";
-                link.href = image;
-                link.click();
-            });
-
-            $(".gfgdelete").click(function() {
-                var row = $(this).closest("tr");
-                var cursos = row.find(".gfgcursos").text();
-                var id = row.find(".gfgid").text();
-
-                if (parseInt(cursos) > 0) {
-                    $("#mensajeEliminar").text(
-                        "No se puede eliminar este POA - tiene formaciones registradas");
-                    $("#btnConfirmarEliminar").hide();
-                } else {
-                    $("#mensajeEliminar").text("¿Está seguro de que desea eliminar este POA?");
-                    $("#btnConfirmarEliminar").show();
-                    $("#poaIdEliminar").val(id);
-                }
-            });
-
-            $("#formEliminarPoa").submit(function(e) {
-                e.preventDefault();
-                var formData = $(this).serialize();
-                $.ajax({
-                    url: "{{ route('poa.delete') }}",
-                    type: "POST",
-                    data: formData,
-                    success: function(response) {
-                        if (response.success) {
-                            alert('POA eliminado con éxito');
-                            location.reload();
-                        } else {
-                            alert('Error al eliminar POA');
-                        }
-                    }
-                });
-            });
-        });
-
-        function ocultar() {
-            $("#ocultar").toggle();
-        }
-
-        $(function() {
-            $("#ocultar").toggle();
-        });
-    </script>
-@endpush
