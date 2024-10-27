@@ -67,7 +67,7 @@
                             <td class="gfgcursos">{{ $poa->gestionCursos->count() }}</td>
                             <td class="gfgid" style="display:none">{{ $poa->id_poa }}</td>
                             <td>
-                                @if (auth()->user()->alianza != 1)
+                                @if (auth()->user()->alianza != 0)
                                     <button class="gfgselect btn btn-primary btn-xs btn-detalle" data-toggle="modal"
                                         data-target="#staticBackdrop">Editar</button>
                                     <button class="gfgdelete btn btn-danger btn-xs btn-detalle" data-toggle="modal"
