@@ -72,10 +72,12 @@ Route::resource('t-juego', TJuegoController::class);
 Route::resource('poa', PoaController::class);
 Route::resource('no-inscritos-sofiaplu', NoInscritosSofiapluController::class);
 Route::resource('grupo', GrupoController::class);
-Route::resource('gestion-curso', GestionCursoController::class);
-Route::get('/gestion-cursos/{id}/edit', [GestionCursoController::class, 'edit'])->name('gestion-cursos.edit');
-Route::put('gestion-curso/{id}', [GestionCursoController::class, 'update'])->name('gestion-curso.update');
-Route::get('/poa2/{id_poa}/Gestion_cursos2', [GestionCursoController::class, 'Gestion_cursos2'])->name('poa.Gestion_cursos2');
+Route::middleware(['auth'])->group(function () {
+    Route::resource('gestion-curso', GestionCursoController::class);
+    Route::get('/gestion-cursos/{id}/edit', [GestionCursoController::class, 'edit'])->name('gestion-cursos.edit');
+    Route::put('gestion-curso/{id}', [GestionCursoController::class, 'update'])->name('gestion-curso.update');
+    Route::get('/poa2/{id_poa}/Gestion_cursos2', [GestionCursoController::class, 'Gestion_cursos2'])->name('poa.Gestion_cursos2');
+});
 
 Route::resource('files-concertacione', FilesConcertacioneController::class);
 Route::resource('file', FileController::class);

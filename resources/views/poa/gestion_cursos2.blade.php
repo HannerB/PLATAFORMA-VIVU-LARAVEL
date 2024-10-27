@@ -146,19 +146,23 @@
                             <button class="btn btn-primary" data-toggle="modal"
                                 data-target="#staticBackdrop">Editar</button>
                             @if (auth()->user()->alianza != 2)
-                                <button class="btn btn-danger" data-toggle="modal"
-                                    data-target="#staticBackdropDelete">Borrar</button>
+                                <button type="button" class="btn btn-danger" data-toggle="modal"
+                                    data-target="#deleteModal{{ $curso->id_Gestion_Cursos }}">
+                                    Borrar
+                                </button>
                             @endif
                             <a href="{{ route('curso_detalle', $curso->id_Gestion_Cursos) }}"
                                 class="btn btn-warning btn-xs">Ver Detalle</a>
                         </td>
                     </tr>
+
+                    @include('partials.modals.gestion_curso.gestion_curso_edit')
+                    @include('partials.modals.gestion_curso.gestion_curso_delete')
                 @endforeach
             </tbody>
         </table>
     </div>
 
-    @include('partials.modals.gestion_curso.gestion_curso_edit')
-    @include('partials.modals.gestion_curso.gestion_curso_delete')
+
     @include('partials.modals.gestion_curso.gestion_curso_concertaciones')
 @endsection

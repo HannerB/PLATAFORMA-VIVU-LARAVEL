@@ -109,12 +109,23 @@ class GestionCursoController extends Controller
 
     public function destroy($id)
     {
+        Log::info('Iniciando eliminación de curso: ' . $id);
         try {
             $curso = GestionCurso::findOrFail($id);
+            Log::info('Curso encontrado: ', ['curso' => $curso->toArray()]);
+
+            $id_poa = $curso->id_nombre_poa;
             $curso->delete();
-            return redirect()->back()->with('success', 'Curso eliminado exitosamente');
+
+            Log::info('Curso eliminado exitosamente');
+
+            return redirect()->route('poa.Gestion_cursos2', $id_poa)
+                ->with('status', 'Curso eliminado exitosamente');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Error al eliminar el curso: ' . $e->getMessage());
+            Log::error('Error en eliminación: ' . $e->getMessage());
+            Log::error($e->getTraceAsString());
+            return redirect()->back()
+                ->with('error', 'Error al eliminar el curso: ' . $e->getMessage());
         }
     }
 
