@@ -85,7 +85,7 @@
         </div>
     </div>
 
-    @include('partials.modals.poa_edit')
-    @include('partials.modals.poa_delete')
-    @include('partials.modals.poa_enlace')
+    @include('partials.modals.poa2.poa2_edit')
+    @include('partials.modals.poa2.poa2_delete')
+    @include('partials.modals.poa2.poa2_enlace')
 @endsection

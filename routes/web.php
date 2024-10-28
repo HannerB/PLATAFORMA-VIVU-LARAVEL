@@ -45,7 +45,7 @@ Route::middleware(['auth'])->group(function () {
     // POA
     Route::get('/poa', [PoaController::class, 'index'])->name('poa');
     Route::post('/poa/store', [PoaController::class, 'store'])->name('poa.store');
-    Route::post('/poa/update/{id}', [PoaController::class, 'update'])->name('poa.update');
+    Route::post('/poa/update', [PoaController::class, 'update'])->name('poa.update');
     Route::delete('/poa/{id}', [PoaController::class, 'destroy'])->name('poa.destroy');
     Route::get('/poa2', [PoaController::class, 'otrosPoaAsignados'])->name('poa2')->middleware('role:Orientador,Aprendiz');
 

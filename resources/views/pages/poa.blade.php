@@ -126,12 +126,12 @@
                         <td class="gfgid" style="display:none">{{ $poa->id_poa }}</td>
                         <td>
                             @if (!Auth::user()->alianza)
-                                <button class="gfgselect btn btn-primary btn-xs" data-bs-toggle="modal"
-                                    data-bs-target="#staticBackdrop">
+                                <button class="gfgselect btn btn-primary btn-xs" data-toggle="modal"
+                                    data-target="#staticBackdrop">
                                     <span></span>Editar
                                 </button>
-                                <button class="gfgdelete btn btn-danger btn-xs" data-bs-toggle="modal"
-                                    data-bs-target="#staticBackdropDelete">
+                                <button class="gfgdelete btn btn-danger btn-xs" data-toggle="modal"
+                                    data-target="#staticBackdropDelete">
                                     <span></span>Borrar
                                 </button>
                             @endif
@@ -141,8 +141,8 @@
                             <a href="" class="btn btn-warning btn-xs">
                                 <span></span>Ver Cursos
                             </a>
-                            <button class="gfgenlace btn btn-success btn-xs" data-bs-toggle="modal"
-                                data-bs-target="#staticBackdropenlace">
+                            <button class="gfgenlace btn btn-success btn-xs" data-toggle="modal"
+                                data-target="#staticBackdropenlace">
                                 <span></span>Enlace
                             </button>
                         </td>
@@ -152,6 +152,7 @@
         </table>
 
         <!-- Modales -->
-        {{-- @include('pages.poa.partials.modals') --}}
+        @include('partials.modals.poa.poa_delete')
+        @include('partials.modals.poa.poa_edit')
     </div>
 @endsection

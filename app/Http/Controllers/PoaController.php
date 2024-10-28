@@ -126,29 +126,50 @@ class PoaController extends Controller
      */
     public function update(Request $request)
     {
-        $poa = Poa::findOrFail($request->poa_id);
+        try {
+            $poa = Poa::findOrFail($request->poa_id);
 
-        $poa->update([
-            'Nombre_Poa' => $request->gfgnombres,
-            'Persona_Enlace' => $request->gfgPersona_Enlace,
-            'Telefono_Enlace' => $request->gfgTelefono_Enlace,
-            'Ocupacion_Productiva' => $request->gfgOcupacion_Productiva,
-        ]);
+            $validated = $request->validate([
+                'gfgnombres' => 'required',
+                'gfgPersona_Enlace' => 'required',
+                'gfgTelefono_Enlace' => 'required',
+                'gfgOcupacion_Productiva' => 'required',
+            ]);
 
-        return redirect()->route('poa.index')->with('success', 'POA actualizado exitosamente');
+            $poa->update([
+                'Nombre_Poa' => $request->gfgnombres,
+                'Persona_Enlace' => $request->gfgPersona_Enlace,
+                'Telefono_Enlace' => $request->gfgTelefono_Enlace,
+                'Ocupacion_Productiva' => $request->gfgOcupacion_Productiva,
+            ]);
+
+            return redirect()->route('poa')
+                ->with('success', 'POA actualizado exitosamente');
+        } catch (\Exception $e) {
+            Log::error('Error al actualizar POA: ' . $e->getMessage());
+            return redirect()->route('poa')
+                ->with('error', 'Error al actualizar POA');
+        }
     }
 
     public function destroy($id)
     {
-        $poa = Poa::findOrFail($id);
+        try {
+            $poa = Poa::findOrFail($id);
 
-        if ($poa->gestionCursos()->count() > 0) {
-            return redirect()->route('poa.index')
-                ->with('error', 'No se puede eliminar este POA - tiene formaciones registradas');
+            if ($poa->gestionCursos()->count() > 0) {
+                return redirect()->route('poa.index')
+                    ->with('error', 'No se puede eliminar este POA - tiene formaciones registradas');
+            }
+
+            $poa->delete();
+            return redirect()->route('poa')
+                ->with('success', 'POA eliminado exitosamente');
+        } catch (\Exception $e) {
+            Log::error('Error al eliminar POA: ' . $e->getMessage());
+            return redirect()->route('poa')
+                ->with('error', 'Error al eliminar POA');
         }
-
-        $poa->delete();
-        return redirect()->route('poa.index')->with('success', 'POA eliminado exitosamente');
     }
 
     private function getPoasByRole($user)
