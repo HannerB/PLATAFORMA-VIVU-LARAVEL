@@ -27,9 +27,9 @@ use Illuminate\Database\Eloquent\Model;
 class Poa extends Model
 {
 
-    protected $perPage = 20;
-
+    public $timestamps = false;
     protected $table = 'poa';
+    protected $primaryKey = 'id_poa';
 
     /**
      * The attributes that are mass assignable.

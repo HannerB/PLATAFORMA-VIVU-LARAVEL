@@ -22,7 +22,9 @@ use Illuminate\Database\Eloquent\Model;
 class AsignarMunicipio extends Model
 {
     
-    protected $perPage = 20;
+    protected $table = 'asignar_municipios';
+    protected $primaryKey = 'id';
+    public $timestamps = false;
 
     /**
      * The attributes that are mass assignable.

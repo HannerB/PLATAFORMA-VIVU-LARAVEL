@@ -41,8 +41,15 @@ Route::middleware(['auth'])->group(function () {
     // Route::get('/planeacion', [PlaneacionController::class, 'index'])->name('planeacion')->middleware('role:Administrador,Orientador');
     Route::get('/cursos-ofertados', [CursoController::class, 'ofertados'])->name('cursos.ofertados');
     // Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware('role:Administrador');
-    Route::get('/poa', [PoaController::class, 'index'])->name('poa')->middleware('role:Orientador');
+
+    // POA
+    Route::get('/poa', [PoaController::class, 'index'])->name('poa');
+    Route::post('/poa/store', [PoaController::class, 'store'])->name('poa.store');
+    Route::post('/poa/update/{id}', [PoaController::class, 'update'])->name('poa.update');
+    Route::delete('/poa/{id}', [PoaController::class, 'destroy'])->name('poa.destroy');
     Route::get('/poa2', [PoaController::class, 'otrosPoaAsignados'])->name('poa2')->middleware('role:Orientador,Aprendiz');
+
+
     Route::get('/emprendimiento/consultar', [EmprendimientoController::class, 'consultar'])->name('emprendimiento.consultar')->middleware('role:Gestor');
     // Route::get('/certificaciones/consultar', [CertificacionController::class, 'consultar'])->name('certificaciones.consultar')->middleware('role:Certificación');
 });
@@ -69,7 +76,6 @@ Route::resource('tipos-usuario', YTipoUsuarioController::class);
 Route::resource('inscritos-curso', YInscritosCursoController::class);
 Route::resource('estados', YEstadoController::class);
 Route::resource('t-juego', TJuegoController::class);
-Route::resource('poa', PoaController::class);
 Route::resource('no-inscritos-sofiaplu', NoInscritosSofiapluController::class);
 Route::resource('grupo', GrupoController::class);
 Route::middleware(['auth'])->group(function () {
