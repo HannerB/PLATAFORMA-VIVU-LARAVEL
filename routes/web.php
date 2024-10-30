@@ -50,10 +50,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/poa2', [PoaController::class, 'otrosPoaAsignados'])->name('poa2')->middleware('role:Orientador,Aprendiz');
 
     //GESTION-CURSOS
-    Route::get('/poa2/{id_poa}/Gestion_cursos2', [GestionCursoController::class, 'Gestion_cursos2'])->name('poa.Gestion_cursos2');
-    Route::get('/poa/{id}/gestion-cursos', [GestionCursoController::class, 'Gestion_cursos'])->name('poa.gestion-cursos');
-
     Route::resource('gestion-curso', GestionCursoController::class);
+    Route::get('/poa/{id}/gestion-cursos', [GestionCursoController::class, 'Gestion_cursos'])->name('poa.gestion-cursos');
+    Route::get('/gestion-curso/{id}/cursos-detalle', [GestionCursoController::class, 'cursosDetalle'])->name('gestion-curso.cursos-detalle');
+
+    Route::get('/poa2/{id_poa}/Gestion_cursos2', [GestionCursoController::class, 'Gestion_cursos2'])->name('poa.Gestion_cursos2');  
     Route::get('/gestion-cursos/{id}/edit', [GestionCursoController::class, 'edit'])->name('gestion-cursos.edit');
     Route::put('gestion-curso/{id}', [GestionCursoController::class, 'update'])->name('gestion-curso.update');
 

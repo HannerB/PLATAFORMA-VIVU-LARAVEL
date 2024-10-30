@@ -225,7 +225,7 @@ class PoaController extends Controller
             $inscritos = $curso->inscritos->count();
             $estadoCurso = $curso->Estado_Curso;
 
-            return view('poa.curso_detalle', compact('curso', 'inscritos', 'estadoCurso'));
+            return view('poa.curso_detalle2', compact('curso', 'inscritos', 'estadoCurso'));
         } catch (\Exception $e) {
             Log::error('Error en detalle: ' . $e->getMessage());
             Log::error($e->getTraceAsString());
