@@ -156,13 +156,13 @@
                         </td>
                     </tr>
 
-                    @include('partials.modals.gestion_curso.gestion_curso_edit')
-                    @include('partials.modals.gestion_curso.gestion_curso_delete')
+                    @include('partials.modals.gestion_curso2.gestion_curso_edit2')
+                    @include('partials.modals.gestion_curso2.gestion_curso_delete2')
                 @endforeach
             </tbody>
         </table>
     </div>
 
 
-    @include('partials.modals.gestion_curso.gestion_curso_concertaciones')
+    @include('partials.modals.gestion_curso2.gestion_curso_concertaciones2')
 @endsection

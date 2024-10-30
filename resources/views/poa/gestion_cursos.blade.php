@@ -139,8 +139,8 @@
         </table>
 
         {{-- Incluir modales --}}
-        {{-- @include('partials.modals.gestion_curso.edit')
-        @include('partials.modals.gestion_curso.delete') --}}
+        @include('partials.modals.gestion_curso.gestion_curso_edit')
+        @include('partials.modals.gestion_curso.gestion_curso_delete')
     </div>
 
     @push('scripts')

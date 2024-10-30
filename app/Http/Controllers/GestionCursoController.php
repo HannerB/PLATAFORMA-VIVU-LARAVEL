@@ -68,6 +68,50 @@ class GestionCursoController extends Controller
         }
     }
 
+    public function actualizarCurso(Request $request, $id)
+    {
+        try {
+            $gestionCurso = GestionCurso::findOrFail($id);
+
+            $validated = $request->validate([
+                'Centro_Formacion' => 'required',
+                'Nivel_Formacion' => 'required',
+                'Nombre_Curso' => 'required',
+                'categoria' => 'required',
+                'Mes_Poa' => 'required',
+                'Estado_Curso' => 'required',
+                'Direccion' => 'required',
+                'cupo' => 'required|numeric'
+            ]);
+
+            $gestionCurso->update($validated);
+
+            return redirect()->route('poa.gestion-cursos', $gestionCurso->id_nombre_poa)
+                ->with('success', 'Curso actualizado exitosamente');
+        } catch (\Exception $e) {
+            Log::error('Error actualizando curso: ' . $e->getMessage());
+            return redirect()->back()
+                ->with('error', 'Error al actualizar el curso: ' . $e->getMessage());
+        }
+    }
+
+    public function eliminarCurso($id)
+    {
+        try {
+            $gestionCurso = GestionCurso::findOrFail($id);
+            $poaId = $gestionCurso->id_nombre_poa;
+
+            $gestionCurso->delete();
+
+            return redirect()->route('poa.gestion-cursos', $poaId)
+                ->with('success', 'Curso eliminado exitosamente');
+        } catch (\Exception $e) {
+            Log::error('Error eliminando curso: ' . $e->getMessage());
+            return redirect()->back()
+                ->with('error', 'Error al eliminar el curso: ' . $e->getMessage());
+        }
+    }
+
     public function index(Request $request): View
     {
         $gestionCursos = GestionCurso::paginate();

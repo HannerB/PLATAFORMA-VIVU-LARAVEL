@@ -26,7 +26,6 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PlaneacionController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CertificacionController;
-use App\Models\GestionCurso;
 
 Auth::routes();
 
@@ -58,6 +57,8 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('gestion-curso', GestionCursoController::class);
     Route::get('/poa/{id}/gestion-cursos', [GestionCursoController::class, 'Gestion_cursos'])->name('poa.gestion-cursos');
     Route::get('/gestion-curso/{id}/cursos-detalle', [GestionCursoController::class, 'cursosDetalle'])->name('gestion-curso.cursos-detalle');
+    Route::put('/gestion-cursos/{id}/actualizar', [GestionCursoController::class, 'actualizarCurso'])->name('gestion-cursos.actualizar');
+    Route::delete('/gestion-cursos/{id}/eliminar', [GestionCursoController::class, 'eliminarCurso'])->name('gestion-cursos.eliminar');
 
     Route::get('/poa2/{id_poa}/Gestion_cursos2', [GestionCursoController::class, 'Gestion_cursos2'])->name('poa.Gestion_cursos2');
     Route::get('/gestion-cursos/{id}/edit', [GestionCursoController::class, 'edit'])->name('gestion-cursos.edit');
