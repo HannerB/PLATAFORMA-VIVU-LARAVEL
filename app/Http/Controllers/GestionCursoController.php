@@ -13,6 +13,26 @@ use Illuminate\Support\Facades\Log;
 
 class GestionCursoController extends Controller
 {
+    public function Gestion_cursos($id)
+    {
+        try {
+            $consulta = GestionCurso::where('id_nombre_poa', $id)
+                ->orderBy('id_Gestion_Cursos', 'DESC')
+                ->get();
+
+            $poa = Poa::findOrFail($id);
+
+            $valores = GestionCurso::where('id_nombre_poa', $id)
+                ->where('Estado_Curso', 'Concertado por validar')
+                ->count();
+
+            return view('poa.gestion_cursos', compact('consulta', 'poa', 'valores'));
+        } catch (\Exception $e) {
+            Log::error('Error en gestionCursos: ' . $e->getMessage());
+            Log::error($e->getTraceAsString());
+            return back()->with('error', 'Error: ' . $e->getMessage());
+        }
+    }
     /**
      * Display a listing of the resource.
      */

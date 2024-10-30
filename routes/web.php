@@ -49,6 +49,14 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/poa/{id}', [PoaController::class, 'destroy'])->name('poa.destroy');
     Route::get('/poa2', [PoaController::class, 'otrosPoaAsignados'])->name('poa2')->middleware('role:Orientador,Aprendiz');
 
+    //GESTION-CURSOS
+    Route::get('/poa2/{id_poa}/Gestion_cursos2', [GestionCursoController::class, 'Gestion_cursos2'])->name('poa.Gestion_cursos2');
+    Route::get('/poa/{id}/gestion-cursos', [GestionCursoController::class, 'Gestion_cursos'])->name('poa.gestion-cursos');
+
+    Route::resource('gestion-curso', GestionCursoController::class);
+    Route::get('/gestion-cursos/{id}/edit', [GestionCursoController::class, 'edit'])->name('gestion-cursos.edit');
+    Route::put('gestion-curso/{id}', [GestionCursoController::class, 'update'])->name('gestion-curso.update');
+
 
     Route::get('/emprendimiento/consultar', [EmprendimientoController::class, 'consultar'])->name('emprendimiento.consultar')->middleware('role:Gestor');
     // Route::get('/certificaciones/consultar', [CertificacionController::class, 'consultar'])->name('certificaciones.consultar')->middleware('role:Certificación');
@@ -78,13 +86,6 @@ Route::resource('estados', YEstadoController::class);
 Route::resource('t-juego', TJuegoController::class);
 Route::resource('no-inscritos-sofiaplu', NoInscritosSofiapluController::class);
 Route::resource('grupo', GrupoController::class);
-Route::middleware(['auth'])->group(function () {
-    Route::resource('gestion-curso', GestionCursoController::class);
-    Route::get('/gestion-cursos/{id}/edit', [GestionCursoController::class, 'edit'])->name('gestion-cursos.edit');
-    Route::put('gestion-curso/{id}', [GestionCursoController::class, 'update'])->name('gestion-curso.update');
-    Route::get('/poa2/{id_poa}/Gestion_cursos2', [GestionCursoController::class, 'Gestion_cursos2'])->name('poa.Gestion_cursos2');
-});
-
 Route::resource('files-concertacione', FilesConcertacioneController::class);
 Route::resource('file', FileController::class);
 Route::resource('emprendimiento', EmprendimientoController::class);

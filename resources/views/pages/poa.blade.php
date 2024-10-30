@@ -135,10 +135,7 @@
                                     <span></span>Borrar
                                 </button>
                             @endif
-                            {{-- <a href="{{ route('gestion-cursos.show', $poa->id_poa) }}" class="btn btn-warning btn-xs">
-                                <span></span>Ver Cursos
-                            </a> --}}
-                            <a href="" class="btn btn-warning btn-xs">
+                            <a href="{{ route('poa.gestion-cursos', $poa->id_poa) }}" class="btn btn-warning btn-xs">
                                 <span></span>Ver Cursos
                             </a>
                             <button class="gfgenlace btn btn-success btn-xs" data-toggle="modal"
