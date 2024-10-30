@@ -18,14 +18,20 @@ class GestionCursoController extends Controller
     {
         try {
             $consulta = GestionCurso::where('id_nombre_poa', $id)
+                ->withCount('inscritos') // Esto añade inscritos_count
                 ->orderBy('id_Gestion_Cursos', 'DESC')
                 ->get();
 
+            // Obtener conteo de inscritos para cada curso
+            foreach ($consulta as $curso) {
+                $curso->inscritos_count = DB::table('cursos_detalle')
+                    ->where('id_gestion_cursos', $curso->id_Gestion_Cursos)
+                    ->count();
+            }
+
             $poa = Poa::findOrFail($id);
 
-            $valores = GestionCurso::where('id_nombre_poa', $id)
-                ->where('Estado_Curso', 'Concertado por validar')
-                ->count();
+            $valores = $consulta->where('Estado_Curso', 'Concertado por validar')->count();
 
             return view('poa.gestion_cursos', compact('consulta', 'poa', 'valores'));
         } catch (\Exception $e) {

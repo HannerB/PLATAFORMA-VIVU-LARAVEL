@@ -118,7 +118,7 @@
                         <td>{{ $curso->Estado_Curso }}</td>
                         <td>{{ $curso->Direccion }}</td>
                         <td>{{ $curso->cupo }}</td>
-                        <td>{{ $curso->inscritos_count ?? 0 }}</td>
+                        <td>{{ $curso->inscritos_count }}</td> {{-- Aquí mostramos el conteo --}}
                         <td>
                             <button class="btn btn-primary btn-xs" data-toggle="modal"
                                 data-target="#editModal{{ $curso->id_Gestion_Cursos }}">
@@ -130,7 +130,7 @@
                             </button>
                             <a href="{{ route('gestion-curso.cursos-detalle', $curso->id_Gestion_Cursos) }}"
                                 class="btn btn-warning btn-xs">
-                                <span></span>Ver Detalle
+                                Ver Detalle
                             </a>
                         </td>
                     </tr>
