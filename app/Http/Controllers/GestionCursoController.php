@@ -41,33 +41,6 @@ class GestionCursoController extends Controller
         }
     }
 
-    public function cursosDetalle($id)
-    {
-        try {
-            $gestionCurso = GestionCurso::findOrFail($id);
-
-            $inscritos = DB::table('cursos_detalle')
-                ->where('id_gestion_cursos', $id)
-                ->join('users', 'cursos_detalle.id_users', '=', 'users.id')
-                ->select(
-                    'cursos_detalle.*',
-                    'users.nombres',
-                    'users.apellidos',
-                    'users.documento',
-                    'users.tipodocumento',
-                    'users.telefono',
-                    'users.tipoPoblacion'
-                )
-                ->get();
-
-            return view('poa.curso_detalle', compact('gestionCurso', 'inscritos'));
-        } catch (\Exception $e) {
-            Log::error('Error en cursosDetalle: ' . $e->getMessage());
-            Log::error($e->getTraceAsString());
-            return back()->with('error', 'Error: ' . $e->getMessage());
-        }
-    }
-
     public function actualizarCurso(Request $request, $id)
     {
         try {

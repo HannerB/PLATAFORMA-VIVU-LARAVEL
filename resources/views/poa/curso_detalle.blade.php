@@ -2,6 +2,24 @@
 
 @section('content')
     <div class="container contenedor">
+        @if (session('status'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <span class="icon-checkmark"></span> {{ session('status') }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <span class="icon-checkmark"></span> Operación NO Realizada: {{ session('error') }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        @endif
+
         @if (session('success'))
             <div class="alert alert-success alert-dismissible" role="alert">
                 <button type="button" class="close" data-dismiss="alert">&times;</button>
@@ -72,12 +90,15 @@
                                 <td>{{ $inscrito->tipoPoblacion }}</td>
                                 <td>{{ $inscrito->fecha_registro }}</td>
                                 <td>
-                                    <button class="btn btn-danger btn-xs" data-toggle="modal"
+                                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal"
                                         data-target="#deleteModal{{ $inscrito->id_cursos_detalle }}">
-                                        <span></span>Eliminar
+                                        <i class="fa fa-trash"></i> Eliminar
                                     </button>
                                 </td>
                             </tr>
+                            @include('partials.modals.gestion_curso.inscritos_eliminar', [
+                                'inscrito' => $inscrito,
+                            ])
                         @endforeach
                     </tbody>
                 </table>

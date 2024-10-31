@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\CursosDetalle;
+use App\Models\GestionCurso;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Http\Requests\CursosDetalleRequest;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class CursosDetalleController extends Controller
@@ -76,9 +79,60 @@ class CursosDetalleController extends Controller
 
     public function destroy($id): RedirectResponse
     {
-        CursosDetalle::find($id)->delete();
+        return $this->eliminarInscrito($id);
+    }
 
-        return Redirect::route('cursos-detalles.index')
-            ->with('success', 'CursosDetalle deleted successfully');
+    public function eliminarInscrito($id): RedirectResponse
+    {
+        try {
+            $cursosDetalle = CursosDetalle::findOrFail($id);
+            $cursosDetalle->delete();
+
+            return back()->with('success', 'Inscrito eliminado exitosamente.');
+        } catch (\Exception $e) {
+            Log::error('Error al eliminar inscrito: ' . $e->getMessage());
+            return back()->with('error', 'No se pudo eliminar el inscrito.');
+        }
+    }
+    public function cursosDetalle($id)
+    {
+        try {
+            $gestionCurso = GestionCurso::findOrFail($id);
+
+            $inscritos = DB::table('cursos_detalle')
+                ->where('id_gestion_cursos', $id)
+                ->join('users', 'cursos_detalle.id_users', '=', 'users.id')
+                ->select(
+                    'cursos_detalle.*',
+                    'users.nombres',
+                    'users.apellidos',
+                    'users.documento',
+                    'users.tipodocumento',
+                    'users.telefono',
+                    'users.tipoPoblacion'
+                )
+                ->get();
+
+            return view('poa.curso_detalle', compact('gestionCurso', 'inscritos'));
+        } catch (\Exception $e) {
+            Log::error('Error en cursosDetalle: ' . $e->getMessage());
+            Log::error($e->getTraceAsString());
+            return back()->with('error', 'Error: ' . $e->getMessage());
+        }
+    }
+
+    public function cursosDetalle2($id)
+    {
+        try {
+            $curso = GestionCurso::findOrFail($id);
+            $inscritos = $curso->inscritos->count();
+            $estadoCurso = $curso->Estado_Curso;
+
+            return view('poa.curso_detalle2', compact('curso', 'inscritos', 'estadoCurso'));
+        } catch (\Exception $e) {
+            Log::error('Error en detalle: ' . $e->getMessage());
+            Log::error($e->getTraceAsString());
+            return back()->with('error', 'Error: ' . $e->getMessage());
+        }
     }
 }

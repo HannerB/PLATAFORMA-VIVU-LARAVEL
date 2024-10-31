@@ -33,7 +33,7 @@
             <button onclick="ocultar()" class="btn btn-warning">Ocultar / Mostrar Registrar nuevos POA</button>
         @endif
 
-        <div class="ocular" id="ocultar" style="display: none;">
+        <div class="ocultar" id="ocultar" style="display: none;">
             <div class="container center-fluid">
                 <form action="{{ route('poa.store') }}" method="POST">
                     @csrf

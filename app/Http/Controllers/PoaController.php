@@ -217,19 +217,4 @@ class PoaController extends Controller
         $poas = Poa::with(['gestionCursos', 'asignarMunicipio'])->get();
         return view('pages.poa2', compact('poas'));
     }
-
-    public function detalle($id)
-    {
-        try {
-            $curso = GestionCurso::findOrFail($id);
-            $inscritos = $curso->inscritos->count();
-            $estadoCurso = $curso->Estado_Curso;
-
-            return view('poa.curso_detalle2', compact('curso', 'inscritos', 'estadoCurso'));
-        } catch (\Exception $e) {
-            Log::error('Error en detalle: ' . $e->getMessage());
-            Log::error($e->getTraceAsString());
-            return back()->with('error', 'Error: ' . $e->getMessage());
-        }
-    }
 }

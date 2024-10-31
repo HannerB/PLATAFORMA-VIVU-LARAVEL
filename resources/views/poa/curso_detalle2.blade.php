@@ -20,7 +20,20 @@
             </div>
         @endif
 
-        {{-- <form action="{{ route('cursos.descargar') }}" method="POST"> --}}
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <span class="icon-checkmark"></span> {{ session('success') }}
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div class="alert alert-danger alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <span class="icon-checkmark"></span> {{ session('error') }}
+            </div>
+        @endif
+
         <form action="" method="POST">
             @csrf
             <div class="form-group">
@@ -33,21 +46,25 @@
                         <label for="filtrar">Seleccione una opción de descarga </label>
                     </div>
                     <div class="col-3">
-                        <select class="form-select col-auto" id="filtro" name="filtro" aria-label="Example select with button addon" required>
+                        <select class="form-select col-auto" id="filtro" name="filtro"
+                            aria-label="Example select with button addon" required>
                             <option value="" selected>Seleccione</option>
                             <option value="1">Descargar Listado inscritos excel</option>
                             <option value="2">Generar / Actualizar Paquete inscritos</option>
                         </select>
                     </div>
-                    <div>
+                    <div class="ml-2">
                         <button class="btn btn-secondary" type="submit">Seleccionar</button>
-                        @if (file_exists(public_path('archivos/Archivo'.$curso->id.'.zip')))
-                            <a href="{{ asset('archivos/Archivo'.$curso->id.'.zip') }}" class="btn btn-success btn-xs">
-                                <span></span>Descargar Paquete Inscritos
+                        @if (file_exists(public_path('archivos/Archivo' . $curso->id . '.zip')))
+                            <a href="{{ asset('archivos/Archivo' . $curso->id . '.zip') }}" class="btn btn-success">
+                                <i class="fa fa-download"></i> Descargar Paquete Inscritos
                             </a>
                         @endif
-                        @if (auth()->user()->alianza != 1 && $curso->Estado_Curso != "Cerrado por baja demanda" && $curso->Estado_Curso != "Entregado al centro")
-                            <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#staticBackdropcerrarCurso" type="button">
+                        @if (auth()->user()->alianza != 1 &&
+                                $curso->Estado_Curso != 'Cerrado por baja demanda' &&
+                                $curso->Estado_Curso != 'Entregado al centro')
+                            <button class="btn btn-warning" data-toggle="modal" data-target="#cerrarCursoModal"
+                                type="button">
                                 Cerrar Programa de formación
                             </button>
                         @endif
@@ -56,120 +73,103 @@
             </div>
         </form>
 
-        <br><br>
+        <div class="card mt-4">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Lista de Inscritos</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="tabla" class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>Residencia</th>
+                                <th>Tipo documento</th>
+                                <th>Documento</th>
+                                <th>Nombres y apellidos</th>
+                                <th>Teléfono</th>
+                                <th>Correo</th>
+                                <th>Tipo Población</th>
+                                <th>Estado Sofia Plus</th>
+                                <th width="200">Gestión</th>
+                            </tr>
+                            <tr>
+                                <td colspan="9">
+                                    <input id="buscar" type="text" class="form-control"
+                                        placeholder="Filtrar registros..." />
+                                </td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($curso->inscritos as $inscrito)
+                                <tr>
+                                    <td>{{ $inscrito->user->municipio }}</td>
+                                    <td>{{ $inscrito->user->tipodocumento }}</td>
+                                    <td>{{ $inscrito->user->documento }}</td>
+                                    <td>{{ $inscrito->user->nombres }} {{ $inscrito->user->apellidos }}</td>
+                                    <td>{{ $inscrito->user->telefono }}</td>
+                                    <td>{{ $inscrito->user->email }}</td>
+                                    <td>{{ $inscrito->user->tipoPoblacion }}</td>
+                                    <td class="text-center">
+                                        {{-- @if ($inscrito->user->noInscritosSofiaplus->isEmpty())
+                                            <span class="badge badge-success">
+                                                <i class="fa fa-check"></i> Inscrito
+                                            </span>
+                                        @else
+                                            <span class="badge badge-danger">
+                                                <i class="fa fa-times"></i> No Inscrito
+                                            </span>
+                                        @endif --}}
+                                    </td>
+                                    <td class="text-center">
+                                        @foreach ($inscrito->user->files as $file)
+                                            @if ($inscrito->modo_Documento == 'documento anexo')
+                                                <a href="{{ asset($file->ruta) }}" class="btn btn-warning btn-sm"
+                                                    title="Descargar documento">
+                                                    <i class="fa fa-download"></i> Documento
+                                                </a>
+                                            @endif
+                                        @endforeach
 
-        <table id="tabla" class="table table-striped">
-            <thead>
-                <tr>
-                    <th style="width:80px">Residencia</th>
-                    <th style="width:80px">Tipo documento</th>
-                    <th style="width:80px">Documento</th>
-                    <th style="width:80px">Nombres y apellidos</th>
-                    <th style="width:80px">Teléfono</th>
-                    <th style="width:50px">Correo</th>
-                    <th style="width:80px">Tipo Población</th>
-                    <th style="width:80px">Soporte documento</th>
-                    <th style="width:80px">Inscrito Sofia Plus</th>
-                    <th style="width:200px">Gestión</th>
-                </tr>
-                <tr>
-                    <td colspan="9">
-                        <input id="buscar" type="text" class="form-control" placeholder="Filtrar" />
-                    </td>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($curso->inscritos as $inscrito)
-                    <tr>
-                        <td class="gfgmunicipio">{{ $inscrito->user->municipio }}</td>
-                        <td class="gfgtipodocumento">{{ $inscrito->user->tipodocumento }}</td>
-                        <td class="gfgdocumento">{{ $inscrito->user->documento }}</td>
-                        <td class="gfgnombrecompleto">{{ $inscrito->user->nombres }} {{ $inscrito->user->apellidos }}</td>
-                        <td class="gfgtelefono">{{ $inscrito->user->telefono }}</td>
-                        <td class="gfgemail">{{ $inscrito->user->email }}</td>
-                        <td class="gfgtipoPoblacion">{{ $inscrito->user->tipoPoblacion }}</td>
-                        <td class="gfgmodo_Documento">{{ $inscrito->modo_Documento }}</td>
-                        <td class="gfgperiodo">
-                            {{-- @if ($inscrito->user->noInscritosSofiaplus->isEmpty())
-                                Sí
-                            @else
-                                No
-                            @endif --}}
-                        </td>
-                        <td class="gfgid" style="display:none">{{ $inscrito->id_cursos_detalle }}</td>
-                        <td class="gfgEstado_Curso" style="display:none">{{ $curso->Estado_Curso }}</td>
-                        <td>
-                            @foreach ($inscrito->user->files as $file)
-                                @if ($inscrito->modo_Documento == "documento anexo")
-                                    <a href="{{ asset($file->ruta) }}" class="btn btn-warning btn-xs">
-                                        <span></span>Descargar
-                                    </a>
-                                @endif
+                                        {{-- @if (auth()->user()->alianza != 1 && $curso->Estado_Curso != 'Cerrado por baja demanda' && $curso->Estado_Curso != 'Entregado al centro') --}}
+                                        <button type="button" class="btn btn-danger btn-sm" data-toggle="modal"
+                                            data-target="#deleteModal{{ $inscrito->id_cursos_detalle }}"
+                                            title="Eliminar inscrito">
+                                            <i class="fa fa-trash"></i> Eliminar
+                                        </button>
+                                        {{-- @endif --}}
+                                    </td>
+                                </tr>
+                                @include('partials.modals.gestion_curso2.inscritos_eliminar', [
+                                    'inscrito' => $inscrito,
+                                ])
                             @endforeach
-                            @if (auth()->user()->alianza != 1 && $curso->Estado_Curso != "Cerrado por baja demanda" && $curso->Estado_Curso != "Entregado al centro")
-                                <button class="gfgselect btn btn-danger btn-xs" data-bs-toggle="modal" data-bs-target="#staticBackdropdelete">
-                                    <span></span>Borrar
-                                </button>
-                            @endif
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-
-        <!-- Modal de eliminación de inscrito -->
-        <div class="modal fade" id="staticBackdropdelete" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="staticBackdropLabel">Eliminar Registro</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="delete" id="delete"></div>
-                    </div>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
 
-        <!-- Modal de cierre de curso -->
-        <div class="modal fade" id="staticBackdropcerrarCurso" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="staticBackdropLabel">Cerrar Programa de Formación</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="estado modal-body">
-                        {{-- <form method="POST" action="{{ route('cursos.cerrar') }}"> --}}
-                        <form method="POST" action="">
-                            @csrf
-                            <div class="form-group">
-                                <label for="nombrecurso">Programa de formación</label>
-                                <input readonly type="text" required class="form-control" id="nombrecurso" name="nombrecurso" placeholder="Nombre persona enlace" value="{{ $curso->Nombre_Curso }}">
-                            </div>
-                            <div class="form-group">
-                                <label for="inscritos">Inscritos</label>
-                                <input readonly type="text" required class="form-control" id="inscritos" name="inscritos" placeholder="" value="{{ $inscritos }}">
-                            </div>
-                            <div class="form-group">
-                                <label for="Estado">Estado</label>
-                                <select type="text" required class="form-control select" id="Estado" name="Estado" placeholder="" value="">
-                                    <option selected disabled value="">{{ $curso->Estado_Curso }}</option>
-                                    <option value="Cerrar Por baja demanda">Cerrar por baja demanda</option>
-                                </select>
-                            </div>
-                            <input hidden type="text" value="16" id="operacion" name="operacion">
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                @if ($curso->Estado_Curso != "Cerrado por baja demanda" && $curso->Estado_Curso != "Concertado acta")
-                                    <button type="submit" class="btn btn-danger">Realizar operación</button>
-                                @endif
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
+        @include('partials.modals.gestion_curso2.cerrar_curso', ['curso' => $curso])
     </div>
+
+    @push('scripts')
+        <script>
+            // Script para filtrar tabla
+            var busqueda = document.getElementById('buscar');
+            var table = document.getElementById("tabla").tBodies[0];
+
+            buscaTabla = function() {
+                texto = busqueda.value.toLowerCase();
+                var r = 0;
+                while (row = table.rows[r++]) {
+                    if (row.innerText.toLowerCase().indexOf(texto) !== -1)
+                        row.style.display = null;
+                    else
+                        row.style.display = 'none';
+                }
+            }
+
+            busqueda.addEventListener('keyup', buscaTabla);
+        </script>
+    @endpush
 @endsection

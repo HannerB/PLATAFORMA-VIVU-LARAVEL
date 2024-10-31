@@ -46,23 +46,31 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/poa/store', [PoaController::class, 'store'])->name('poa.store');
     Route::post('/poa/update', [PoaController::class, 'update'])->name('poa.update');
     Route::delete('/poa/{id}', [PoaController::class, 'destroy'])->name('poa.destroy');
-    Route::get('/poa2', [PoaController::class, 'otrosPoaAsignados'])->name('poa2')->middleware('role:Orientador,Aprendiz');
 
+    Route::get('/poa2', [PoaController::class, 'otrosPoaAsignados'])->name('poa2')->middleware('role:Orientador,Aprendiz');
     Route::get('/poa2', [PoaController::class, 'poa2'])->name('poa2');
     Route::post('/poa/update', [PoaController::class, 'update'])->name('poa.update');
     Route::post('/poa/delete', [PoaController::class, 'delete'])->name('poa.delete');
-    Route::get('/poa2/cursos/{id}/detalle', [PoaController::class, 'detalle'])->name('curso_detalle');
 
     //GESTION-CURSOS
     Route::resource('gestion-curso', GestionCursoController::class);
     Route::get('/poa/{id}/gestion-cursos', [GestionCursoController::class, 'Gestion_cursos'])->name('poa.gestion-cursos');
-    Route::get('/gestion-curso/{id}/cursos-detalle', [GestionCursoController::class, 'cursosDetalle'])->name('gestion-curso.cursos-detalle');
     Route::put('/gestion-cursos/{id}/actualizar', [GestionCursoController::class, 'actualizarCurso'])->name('gestion-cursos.actualizar');
     Route::delete('/gestion-cursos/{id}/eliminar', [GestionCursoController::class, 'eliminarCurso'])->name('gestion-cursos.eliminar');
 
     Route::get('/poa2/{id_poa}/Gestion_cursos2', [GestionCursoController::class, 'Gestion_cursos2'])->name('poa.Gestion_cursos2');
     Route::get('/gestion-cursos/{id}/edit', [GestionCursoController::class, 'edit'])->name('gestion-cursos.edit');
     Route::put('gestion-curso/{id}', [GestionCursoController::class, 'update'])->name('gestion-curso.update');
+
+    //CURSOS-DETALLE
+    Route::resource('cursos-detalle', CursosDetalleController::class);
+    Route::get('/poa2/gestion-cursos/{id}/cursos-detalle', [CursosDetalleController::class, 'cursosDetalle2'])->name('curso_detalle');
+    
+
+    Route::get('/poa/gestion-cursos/{id}/cursos-detalle', [CursosDetalleController::class, 'cursosDetalle'])->name('gestion-curso.cursos-detalle');
+    Route::delete('/cursos-detalle/{id}', [CursosDetalleController::class, 'eliminarInscrito'])->name('cursos-detalle.eliminar');
+
+
 
 
     Route::get('/emprendimiento/consultar', [EmprendimientoController::class, 'consultar'])->name('emprendimiento.consultar')->middleware('role:Gestor');
@@ -97,7 +105,6 @@ Route::resource('files-concertacione', FilesConcertacioneController::class);
 Route::resource('file', FileController::class);
 Route::resource('emprendimiento', EmprendimientoController::class);
 Route::resource('cursos-solicitados', CursosSolicitadoController::class);
-Route::resource('cursos-detalle', CursosDetalleController::class);
 Route::resource('curso', CursoController::class);
 Route::resource('concertacione', ConcertacioneController::class);
 Route::resource('competencia', CompetenciaController::class);
