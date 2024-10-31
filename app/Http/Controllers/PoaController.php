@@ -217,4 +217,34 @@ class PoaController extends Controller
         $poas = Poa::with(['gestionCursos', 'asignarMunicipio'])->get();
         return view('pages.poa2', compact('poas'));
     }
+
+    public function planeacion(Request $request): View
+    {
+        $municipio = $request->get('filtro', '');
+
+        $cursos = DB::table('gestion_cursos')
+            ->join('poa', 'poa.id_poa', '=', 'gestion_cursos.id_nombre_poa')
+            ->join('asignar_municipios', 'asignar_municipios.id', '=', 'poa.id_asignar_municipios')
+            ->join('users', 'users.id', '=', 'asignar_municipios.id_responsable')
+            ->where('gestion_cursos.Municipio_Curso', 'LIKE', "%{$municipio}%")
+            ->orderBy('gestion_cursos.id_Gestion_Cursos', 'DESC')
+            ->select(
+                'gestion_cursos.*',
+                'poa.Nombre_Poa',
+                'users.nombres',
+                'users.apellidos',
+                'asignar_municipios.periodo'
+            )
+            ->get();
+
+        // Obtener el conteo de inscritos para cada curso
+        foreach ($cursos as $curso) {
+            $inscritos = DB::table('cursos_detalle')
+                ->where('id_gestion_cursos', $curso->id_Gestion_Cursos)
+                ->count();
+            $curso->inscritos = $inscritos;
+        }
+
+        return view('pages.planeacion', compact('cursos', 'municipio'));
+    }
 }

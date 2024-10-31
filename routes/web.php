@@ -37,7 +37,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/perfil', [UserController::class, 'index'])->name('perfil');
 
     // Route::get('/tablero', [AdminController::class, 'tablero'])->name('tablero')->middleware('role:Administrador');
-    // Route::get('/planeacion', [PlaneacionController::class, 'index'])->name('planeacion')->middleware('role:Administrador,Orientador');
     Route::get('/cursos-ofertados', [CursoController::class, 'ofertados'])->name('cursos.ofertados');
     // Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware('role:Administrador');
 
@@ -51,6 +50,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/poa2', [PoaController::class, 'poa2'])->name('poa2');
     Route::post('/poa/update', [PoaController::class, 'update'])->name('poa.update');
     Route::post('/poa/delete', [PoaController::class, 'delete'])->name('poa.delete');
+
+    Route::get('/planeacion', [PoaController::class, 'planeacion'])->name('planeacion');
 
     //GESTION-CURSOS
     Route::resource('gestion-curso', GestionCursoController::class);

@@ -51,9 +51,30 @@ class CursosDetalleController extends Controller
      */
     public function show($id): View
     {
-        $cursosDetalle = CursosDetalle::find($id);
+        // Obtener información del curso
+        $curso = DB::table('gestion_cursos')
+            ->join('poa', 'poa.id_poa', '=', 'gestion_cursos.id_nombre_poa')
+            ->select('gestion_cursos.*', 'poa.Nombre_Poa')
+            ->where('gestion_cursos.id_Gestion_Cursos', $id)
+            ->first();
 
-        return view('cursos-detalle.show', compact('cursosDetalle'));
+        // Obtener los detalles/inscritos del curso
+        $inscritos = DB::table('cursos_detalle')
+            ->join('users', 'users.id', '=', 'cursos_detalle.id_users')
+            ->where('cursos_detalle.id_gestion_cursos', $id)
+            ->select(
+                'cursos_detalle.*',
+                'users.nombres',
+                'users.apellidos',
+                'users.documento',
+                'users.tipodocumento',
+                'users.telefono',
+                'users.email',
+                'users.tipoPoblacion'
+            )
+            ->get();
+
+        return view('poa.cursos-detalle.show_cursos', compact('curso', 'inscritos'));
     }
 
     /**
@@ -113,7 +134,7 @@ class CursosDetalleController extends Controller
                 )
                 ->get();
 
-            return view('poa.curso_detalle', compact('gestionCurso', 'inscritos'));
+            return view('poa.cursos-detalle.curso_detalle', compact('gestionCurso', 'inscritos'));
         } catch (\Exception $e) {
             Log::error('Error en cursosDetalle: ' . $e->getMessage());
             Log::error($e->getTraceAsString());
@@ -128,7 +149,7 @@ class CursosDetalleController extends Controller
             $inscritos = $curso->inscritos->count();
             $estadoCurso = $curso->Estado_Curso;
 
-            return view('poa.curso_detalle2', compact('curso', 'inscritos', 'estadoCurso'));
+            return view('poa.cursos-detalle.curso_detalle2', compact('curso', 'inscritos', 'estadoCurso'));
         } catch (\Exception $e) {
             Log::error('Error en detalle: ' . $e->getMessage());
             Log::error($e->getTraceAsString());

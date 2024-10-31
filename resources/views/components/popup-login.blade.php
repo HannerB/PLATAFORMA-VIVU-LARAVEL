@@ -10,7 +10,7 @@
             <a href="{{ route('dashboard') }}"><i class="fa fa-area-chart fa-fw" aria-hidden="true"></i> Dashboard</a>
         @elseif(Auth::user()->tipoUsuario->nombre == 'Orientador')
             <a href="{{ route('poa') }}"><i class="fa fa-user fa-fw" aria-hidden="true"></i> Gestion Poa</a>
-            {{-- <a href="{{ route('planeacion') }}"><i class="fa fa-user fa-fw" aria-hidden="true"></i> Planeacion</a> --}}
+            <a href="{{ route('planeacion') }}"><i class="fa fa-user fa-fw" aria-hidden="true"></i> Planeacion</a>  
             {{-- @if (Auth::user()->tieneAlianzaActiva()) --}}
                 <a href="{{ route('poa2') }}"><i class="fa fa-user fa-fw" aria-hidden="true"></i>Otros Poa asignados</a>
             {{-- @endif --}}

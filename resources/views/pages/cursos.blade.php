@@ -69,13 +69,13 @@
                 <tbody>
                     @foreach ($cursos as $curso)
                         <tr>
-                            <td>{{ $curso->Municipio_Curso }}</td>
-                            <td class="columna1">{{ $curso->Nivel_Formacion }}</td>
-                            <td>{{ $curso->Nombre_Curso }}</td>
-                            <td>{{ $curso->Direccion }}</td>
-                            <td class="columna1">{{ $curso->categoria }}</td>
-                            <td class="columna1">{{ $curso->Mes_Poa }}</td>
-                            <td class="columna1">{{ $curso->Nombre_Poa }}</td>
+                            <td>{{ $curso->municipio }}</td>
+                            <td class="columna1">{{ $curso->formacion }}</td>
+                            <td>{{ $curso->curso }}</td>
+                            <td>{{ $curso->direccion }}</td>
+                            <td class="columna1">{{ $curso->descripcion }}</td>
+                            <td class="columna1">{{ $curso->fecha_inicio }}</td>
+                            <td class="columna1">{{ $curso->nombre_grupo }}</td>
                             <td>
                                 <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#inscriptionModal"
                                     data-curso="{{ $curso->id }}">
