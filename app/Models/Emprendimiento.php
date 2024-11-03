@@ -55,7 +55,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Emprendimiento extends Model
 {
-    
+    protected $table = 'emprendimiento';
     protected $perPage = 20;
 
     /**
@@ -64,6 +64,4 @@ class Emprendimiento extends Model
      * @var array<int, string>
      */
     protected $fillable = ['regional', 'centroFormacion', 'codigoProyecto', 'nombresPersonal', 'apellidosPersonal', 'documentoPersonal', 'fechaNacimiento', 'ciudadNacimiento', 'departamentoNacimiento', 'correoPersonal', 'genero', 'telefonoOficinaPersonal', 'telefonoMovilPersonal', 'direccionResidencia', 'ciudadResidencia', 'departamentoResidencia', 'tipoPoblacionPersonal', 'formacionAcademica', 'programaFormacion', 'institucionAcademica', 'estadoAcademica', 'servicioRequerido', 'nombreEmpresa', 'nitEmpresa', 'estatusEmpresa', 'fechaConstitucionEmpresa', 'representanteEmpresa', 'tamanoEmpresa', 'actividadEconomicaEmpresa', 'sectorEconomicoEmpresa', 'tipoSociedadEmpresa', 'direccionEmpresa', 'paginaWebEmpresa', 'ciudadEmpresa', 'departamentoEmpresa', 'correoEmpresa', 'empleadosFormales', 'empleadosInformales', 'descripcionProductosEmpresa', 'internetEmpresa', 'negocioEnCasa'];
-
-
 }

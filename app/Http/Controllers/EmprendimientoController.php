@@ -7,6 +7,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Http\Requests\EmprendimientoRequest;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
 
 class EmprendimientoController extends Controller
@@ -18,7 +19,7 @@ class EmprendimientoController extends Controller
     {
         $emprendimientos = Emprendimiento::paginate();
 
-        return view('emprendimiento.index', compact('emprendimientos'))
+        return view('pages.emprendimiento.consultar', compact('emprendimientos'))
             ->with('i', ($request->input('page', 1) - 1) * $emprendimientos->perPage());
     }
 
@@ -84,7 +85,22 @@ class EmprendimientoController extends Controller
 
     public function consultar()
     {
-        // Lógica para consultar emprendimientos
-        return view('emprendimiento.consultar');
+        try {
+            $emprendimientos = Emprendimiento::select([
+                'nombresPersonal',
+                'apellidosPersonal',
+                'documentoPersonal',
+                'genero',
+                'correoPersonal',
+                'telefonoMovilPersonal',
+                'id'
+            ])->paginate(10);
+
+            // Cambiar esta línea para que coincida con tu estructura de carpetas
+            return view('pages.emprendimiento.consultar', compact('emprendimientos'));
+        } catch (\Exception $e) {
+            Log::error('Error en consulta de emprendimientos: ' . $e->getMessage());
+            return back()->with('error', 'Error al cargar los datos: ' . $e->getMessage());
+        }
     }
 }

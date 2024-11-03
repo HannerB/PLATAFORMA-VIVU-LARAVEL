@@ -22,9 +22,9 @@ use App\Http\Controllers\CompetenciaController;
 use App\Http\Controllers\AsignarMunicipioController;
 use App\Http\Controllers\AlianzaMunicipioController;
 use App\Http\Controllers\AccesoRegistroController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PlaneacionController;
-use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CertificacionController;
 
 Auth::routes();
@@ -34,11 +34,15 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth'])->group(function () {
+
+    // USER
     Route::get('/perfil', [UserController::class, 'index'])->name('perfil');
 
-    // Route::get('/tablero', [AdminController::class, 'tablero'])->name('tablero')->middleware('role:Administrador');
+    // CURSOS
     Route::get('/cursos-ofertados', [CursoController::class, 'ofertados'])->name('cursos.ofertados');
-    // Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware('role:Administrador');
+
+    // DASHBOARD
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware('role:Administrador');
 
     // POA
     Route::get('/poa', [PoaController::class, 'index'])->name('poa');
@@ -66,15 +70,16 @@ Route::middleware(['auth'])->group(function () {
     //CURSOS-DETALLE
     Route::resource('cursos-detalle', CursosDetalleController::class);
     Route::get('/poa2/gestion-cursos/{id}/cursos-detalle', [CursosDetalleController::class, 'cursosDetalle2'])->name('curso_detalle');
-    
+
 
     Route::get('/poa/gestion-cursos/{id}/cursos-detalle', [CursosDetalleController::class, 'cursosDetalle'])->name('gestion-curso.cursos-detalle');
     Route::delete('/cursos-detalle/{id}', [CursosDetalleController::class, 'eliminarInscrito'])->name('cursos-detalle.eliminar');
 
+    // EMPRENDIMIENTO
+    Route::get('/', [EmprendimientoController::class, 'index'])->name('index');
+    Route::get('/consultar', [EmprendimientoController::class, 'consultar'])->name('emprendimiento.consultar');
 
-
-
-    Route::get('/emprendimiento/consultar', [EmprendimientoController::class, 'consultar'])->name('emprendimiento.consultar')->middleware('role:Gestor');
+    // Route::get('/tablero', [AdminController::class, 'tablero'])->name('tablero')->middleware('role:Administrador');
     // Route::get('/certificaciones/consultar', [CertificacionController::class, 'consultar'])->name('certificaciones.consultar')->middleware('role:Certificación');
 });
 
@@ -104,7 +109,6 @@ Route::resource('no-inscritos-sofiaplu', NoInscritosSofiapluController::class);
 Route::resource('grupo', GrupoController::class);
 Route::resource('files-concertacione', FilesConcertacioneController::class);
 Route::resource('file', FileController::class);
-Route::resource('emprendimiento', EmprendimientoController::class);
 Route::resource('cursos-solicitados', CursosSolicitadoController::class);
 Route::resource('curso', CursoController::class);
 Route::resource('concertacione', ConcertacioneController::class);
