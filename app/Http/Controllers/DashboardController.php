@@ -6,8 +6,7 @@ use App\Models\Curso;
 use App\Models\User;
 use App\Models\YInscritosCurso;
 use App\Models\GestionCurso;
-use App\Models\Emprendimiento;
-use App\Models\Poa;
+use App\Models\CursosSolicitado;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -15,60 +14,78 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        // Estadísticas generales
-        $stats = [
-            'total_usuarios' => User::count(),
-            'total_cursos' => Curso::count(),
-            'total_inscritos' => YInscritosCurso::count(),
-            'total_emprendimientos' => Emprendimiento::count(),
+        // Verificar autenticación
+        if (!auth()->check()) {
+            return redirect()->route('login');
+        }
+
+        $user = auth()->user();
+        $role = $user->rol;
+
+        // Datos para los 4 gráficos específicos del diseño original
+        $dashboardData = [
+            'grafico1' => $this->getMunicipiosCursosStats(),
+            'grafico2' => $this->getGeneroStats(),
+            'grafico3' => $this->getPoblacionStats(),
+            'grafico4' => $this->getCursosSolicitadosStats()
         ];
 
-        // Cursos más populares
-        $cursos_populares = YInscritosCurso::select('id_curso', DB::raw('count(*) as total'))
-            ->groupBy('id_curso')
-            ->with('curso')
-            ->orderBy('total', 'DESC')
-            ->limit(5)
-            ->get();
+        // Determinar qué vista mostrar según el rol
+        $view = match ($role) {
+            '1' => 'pages.dashboard',
+            '3' => 'orientador.dashboard',
+            '4' => 'gestor.dashboard',
+            default => 'certificacion.dashboard',
+        };
 
-        // Estadísticas por municipio
-        $stats_municipios = GestionCurso::select('Municipio_Curso', DB::raw('count(*) as total_cursos'))
+        return view($view, compact('dashboardData', 'user'));
+    }
+
+    private function getMunicipiosCursosStats()
+    {
+        return GestionCurso::select('Municipio_Curso', DB::raw('count(*) as total'))
             ->groupBy('Municipio_Curso')
             ->get();
+    }
 
-        // Estado de POAs
-        $stats_poa = Poa::select('estado', DB::raw('count(*) as total'))
-            ->groupBy('estado')
+    private function getGeneroStats()
+    {
+        return User::select('sexo', DB::raw('count(*) as total'))
+            ->groupBy('sexo')
+            ->get();
+    }
+
+    private function getPoblacionStats()
+    {
+        return User::select('tipoPoblacion', DB::raw('count(*) as total'))
+            ->groupBy('tipoPoblacion')
+            ->get();
+    }
+
+    private function getCursosSolicitadosStats()
+    {
+        return CursosSolicitado::select('nombreCursoSolicitado', DB::raw('count(*) as total'))
+            ->groupBy('nombreCursoSolicitado')
+            ->get();
+    }
+
+    // DashboardController.php
+
+    public function graficoUno()
+    {
+        // Verificar autenticación
+        if (!auth()->check()) {
+            return redirect()->route('login');
+        }
+
+        $user = auth()->user();
+
+        // Obtener datos para el gráfico
+        $municipiosData = DB::table('cursos')
+            ->select(DB::raw('UPPER(municipio) as municipio'), DB::raw('COUNT(*) as ContarMunicipio'))
+            ->groupBy('municipio')
             ->get();
 
-        // Inscripciones mensuales
-        $inscripciones_mensuales = YInscritosCurso::select(
-            DB::raw('MONTH(fecha_reg) as mes'),
-            DB::raw('COUNT(*) as total')
-        )
-            ->whereYear('fecha_reg', date('Y'))
-            ->groupBy('mes')
-            ->get();
-
-        // Últimos usuarios registrados
-        $ultimos_usuarios = User::latest('fechaRegistro')
-            ->limit(5)
-            ->get();
-
-        // Próximos cursos a iniciar
-        $proximos_cursos = Curso::where('fecha_inicio', '>', now())
-            ->orderBy('fecha_inicio', 'ASC')
-            ->limit(5)
-            ->get();
-
-        return view('pages.dashboard', compact(
-            'stats',
-            'cursos_populares',
-            'stats_municipios',
-            'stats_poa',
-            'inscripciones_mensuales',
-            'ultimos_usuarios',
-            'proximos_cursos'
-        ));
+        return view('partials.graficos.grafico-uno', compact('municipiosData', 'user'));
     }
 }

@@ -42,7 +42,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/cursos-ofertados', [CursoController::class, 'ofertados'])->name('cursos.ofertados');
 
     // DASHBOARD
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware('role:Administrador');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard/grafico-uno', [DashboardController::class, 'graficoUno'])->name('dashboard.grafico-uno');
 
     // POA
     Route::get('/poa', [PoaController::class, 'index'])->name('poa');
@@ -76,7 +77,7 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/cursos-detalle/{id}', [CursosDetalleController::class, 'eliminarInscrito'])->name('cursos-detalle.eliminar');
 
     // EMPRENDIMIENTO
-    Route::get('/', [EmprendimientoController::class, 'index'])->name('emprendimiento.index');
+    Route::get('/emprendimiento', [EmprendimientoController::class, 'index'])->name('emprendimiento.index');
     Route::get('/consultar', [EmprendimientoController::class, 'consultar'])->name('emprendimiento.consultar');
     Route::post('/store', [EmprendimientoController::class, 'store'])->name('emprendimiento.store');
 
