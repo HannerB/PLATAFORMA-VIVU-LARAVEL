@@ -76,8 +76,9 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/cursos-detalle/{id}', [CursosDetalleController::class, 'eliminarInscrito'])->name('cursos-detalle.eliminar');
 
     // EMPRENDIMIENTO
-    Route::get('/', [EmprendimientoController::class, 'index'])->name('index');
+    Route::get('/', [EmprendimientoController::class, 'index'])->name('emprendimiento.index');
     Route::get('/consultar', [EmprendimientoController::class, 'consultar'])->name('emprendimiento.consultar');
+    Route::post('/store', [EmprendimientoController::class, 'store'])->name('emprendimiento.store');
 
     // Route::get('/tablero', [AdminController::class, 'tablero'])->name('tablero')->middleware('role:Administrador');
     // Route::get('/certificaciones/consultar', [CertificacionController::class, 'consultar'])->name('certificaciones.consultar')->middleware('role:Certificación');

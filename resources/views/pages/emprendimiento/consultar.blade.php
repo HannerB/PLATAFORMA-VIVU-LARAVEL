@@ -3,6 +3,21 @@
 @section('title', 'Consultar Emprendimiento | Oferta Complementaria')
 
 @section('content')
+
+    @if (session('success'))
+        <div class="alert alert-success alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <span class="icon-checkmark"></span> {{ session('success') }}
+        </div>
+    @endif
+
+    @if (session('error'))
+        <div class="alert alert-danger alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <span class="icon-checkmark"></span> {{ session('error') }}
+        </div>
+    @endif
+    
     <div class="mt-1 PopUpContainer">
         <div class="contentContainer">
             <ol class="breadcrumb">
@@ -14,7 +29,7 @@
 
     <div class="container down">
         <h4>
-            <a href="{{ route('index') }}" style="color: #FF6C00;">
+            <a href="{{ route('emprendimiento.index') }}" style="color: #FF6C00;">
                 Llenar formulario de Emprendimiento
             </a>
         </h4>

@@ -56,6 +56,9 @@ use Illuminate\Database\Eloquent\Model;
 class Emprendimiento extends Model
 {
     protected $table = 'emprendimiento';
+
+    public $timestamps = false;
+    
     protected $perPage = 20;
 
     /**
