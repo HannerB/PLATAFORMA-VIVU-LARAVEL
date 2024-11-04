@@ -44,6 +44,7 @@ Route::middleware(['auth'])->group(function () {
     // DASHBOARD
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/dashboard/grafico-uno', [DashboardController::class, 'graficoUno'])->name('dashboard.grafico-uno');
+    Route::get('/dashboard/grafico-dos', [DashboardController::class, 'graficoDos'])->name('dashboard.grafico-dos');
 
     // POA
     Route::get('/poa', [PoaController::class, 'index'])->name('poa');

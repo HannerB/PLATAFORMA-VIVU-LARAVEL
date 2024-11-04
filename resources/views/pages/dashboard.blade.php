@@ -41,10 +41,9 @@
                         </div>
                         <div class="card-footer">
                             <small class="text-muted">
-                                <button class="btn btn-outline-info btn-block"
-                                    onclick="showChart('generos', {{ json_encode($dashboardData['grafico2']) }})">
+                                <a href="{{ route('dashboard.grafico-dos') }}" class="btn btn-outline-info btn-block">
                                     Ver gráfico
-                                </button>
+                                </a>
                             </small>
                         </div>
                     </div>
@@ -118,7 +117,7 @@
     </div>
 @endsection
 
-@push
+@push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         let currentChart = null;

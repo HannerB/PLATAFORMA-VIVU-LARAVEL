@@ -69,8 +69,6 @@ class DashboardController extends Controller
             ->get();
     }
 
-    // DashboardController.php
-
     public function graficoUno()
     {
         // Verificar autenticación
@@ -87,5 +85,23 @@ class DashboardController extends Controller
             ->get();
 
         return view('partials.graficos.grafico-uno', compact('municipiosData', 'user'));
+    }
+
+    public function graficoDos()
+    {
+        if (!auth()->check()) {
+            return redirect()->route('login');
+        }
+
+        $user = auth()->user();
+
+        // Obtener datos de género solo para usuarios con rol '2'
+        $generosData = DB::table('users')
+            ->select(DB::raw('UPPER(sexo) as sexo'), DB::raw('COUNT(*) as ContarSexo'))
+            ->where('rol', '2')
+            ->groupBy('sexo')
+            ->get();
+
+        return view('partials.graficos.grafico-dos', compact('generosData', 'user'));
     }
 }
