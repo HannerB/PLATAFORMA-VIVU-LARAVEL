@@ -84,7 +84,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/consultar', [EmprendimientoController::class, 'consultar'])->name('emprendimiento.consultar');
     Route::post('/store', [EmprendimientoController::class, 'store'])->name('emprendimiento.store');
 
-    // Route::get('/tablero', [AdminController::class, 'tablero'])->name('tablero')->middleware('role:Administrador');
+    // TABLERO
+    Route::get('/tablero', [AdminController::class, 'tablero'])->name('tablero');
+    
     // Route::get('/certificaciones/consultar', [CertificacionController::class, 'consultar'])->name('certificaciones.consultar')->middleware('role:Certificación');
 });
 

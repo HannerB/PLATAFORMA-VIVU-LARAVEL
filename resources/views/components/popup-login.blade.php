@@ -3,7 +3,7 @@
         <a href="{{ route('perfil') }}"><i class="fa fa-user fa-fw" aria-hidden="true"></i> Tu perfil</a>
 
         @if (Auth::user()->tipoUsuario->nombre == 'Administrador')
-            {{-- <a href="{{ route('tablero') }}"><i class="fa fa-user fa-fw" aria-hidden="true"></i> Gestion</a> --}}
+            <a href="{{ route('tablero') }}"><i class="fa fa-user fa-fw" aria-hidden="true"></i> Gestion</a>
             <a href="{{ route('planeacion') }}"><i class="fa fa-user fa-fw" aria-hidden="true"></i> Planeacion</a>
             <a href="{{ route('cursos.ofertados') }}"><i class="fa fa-cogs fa-fw" aria-hidden="true"></i> Cursos
                 ofertados</a>
