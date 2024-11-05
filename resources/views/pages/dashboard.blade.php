@@ -64,10 +64,9 @@
                         </div>
                         <div class="card-footer">
                             <small class="text-muted">
-                                <button class="btn btn-outline-info btn-block"
-                                    onclick="showChart('poblacion', {{ json_encode($dashboardData['grafico3']) }})">
+                                <a href="{{ route('dashboard.grafico-tres') }}" class="btn btn-outline-info btn-block">
                                     Ver gráfico
-                                </button>
+                                </a>
                             </small>
                         </div>
                     </div>
@@ -87,10 +86,9 @@
                         </div>
                         <div class="card-footer">
                             <small class="text-muted">
-                                <button class="btn btn-outline-info btn-block"
-                                    onclick="showChart('cursos', {{ json_encode($dashboardData['grafico4']) }})">
+                                <a href="{{ route('dashboard.grafico-cuatro') }}" class="btn btn-outline-info btn-block">
                                     Ver gráfico
-                                </button>
+                                </a>
                             </small>
                         </div>
                     </div>

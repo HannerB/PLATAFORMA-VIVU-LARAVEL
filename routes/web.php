@@ -45,6 +45,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/dashboard/grafico-uno', [DashboardController::class, 'graficoUno'])->name('dashboard.grafico-uno');
     Route::get('/dashboard/grafico-dos', [DashboardController::class, 'graficoDos'])->name('dashboard.grafico-dos');
+    Route::get('/dashboard/grafico-tres', [DashboardController::class, 'graficoTres'])->name('dashboard.grafico-tres');
+    Route::get('/dashboard/grafico-cuatro', [DashboardController::class, 'graficoCuatro'])->name('dashboard.grafico-cuatro');
 
     // POA
     Route::get('/poa', [PoaController::class, 'index'])->name('poa');

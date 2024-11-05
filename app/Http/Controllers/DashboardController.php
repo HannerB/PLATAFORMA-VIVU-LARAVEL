@@ -104,4 +104,45 @@ class DashboardController extends Controller
 
         return view('partials.graficos.grafico-dos', compact('generosData', 'user'));
     }
+
+    public function graficoTres()
+    {
+        if (!auth()->check()) {
+            return redirect()->route('login');
+        }
+
+        $user = auth()->user();
+
+        // Obtener datos de tipo de población
+        $poblacionData = DB::table('users')
+            ->select(
+                DB::raw('UPPER(tipoPoblacion) as tipoPoblacion'),
+                DB::raw('COUNT(*) as ContarPoblacion')
+            )
+            ->where('rol', '2')
+            ->groupBy('tipoPoblacion')
+            ->get();
+
+        return view('partials.graficos.grafico-tres', compact('poblacionData', 'user'));
+    }
+
+    public function graficoCuatro()
+    {
+        if (!auth()->check()) {
+            return redirect()->route('login');
+        }
+
+        $user = auth()->user();
+
+        // Obtener datos de cursos solicitados
+        $cursosData = DB::table('cursos_solicitados')
+            ->select(
+                DB::raw('UPPER(nombreCursoSolicitado) as nombreCursoSolicitado'),
+                DB::raw('COUNT(*) as NombreCurso')
+            )
+            ->groupBy('nombreCursoSolicitado')
+            ->get();
+
+        return view('partials.graficos.grafico-cuatro', compact('cursosData', 'user'));
+    }
 }
