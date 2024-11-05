@@ -86,6 +86,12 @@ Route::middleware(['auth'])->group(function () {
 
     // TABLERO
     Route::get('/tablero', [AdminController::class, 'tablero'])->name('tablero');
+
+    // ASIGNAR-MUNICIPIO
+    Route::resource('asignar-responsables', AsignarMunicipioController::class);
+    
+    // ADMIN
+    
     
     // Route::get('/certificaciones/consultar', [CertificacionController::class, 'consultar'])->name('certificaciones.consultar')->middleware('role:Certificación');
 });

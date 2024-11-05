@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AsignarMunicipio;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Http\Requests\AsignarMunicipioRequest;
@@ -11,74 +12,62 @@ use Illuminate\View\View;
 
 class AsignarMunicipioController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index(Request $request): View
+    public function index()
     {
-        $asignarMunicipios = AsignarMunicipio::paginate();
+        $orientadores = User::where('rol', 3)->get();
+        $asignaciones = AsignarMunicipio::with('user')
+            ->whereHas('user', function ($query) {
+                $query->where('rol', 3);
+            })
+            ->orderBy('id', 'DESC')
+            ->get();
 
-        return view('asignar-municipio.index', compact('asignarMunicipios'))
-            ->with('i', ($request->input('page', 1) - 1) * $asignarMunicipios->perPage());
+        return view('admin.asignar-municipio', compact('orientadores', 'asignaciones'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create(): View
+    public function store(Request $request)
     {
-        $asignarMunicipio = new AsignarMunicipio();
+        $request->validate([
+            'municipio' => 'required',
+            'id_responsable' => 'required|exists:users,id',
+            'periodo' => 'required'
+        ]);
 
-        return view('asignar-municipio.create', compact('asignarMunicipio'));
+        AsignarMunicipio::create([
+            'municipio' => $request->municipio,
+            'id_responsable' => $request->id_responsable,
+            'periodo' => $request->periodo,
+            'estado' => 'activo',
+            'fecha_registro' => now()
+        ]);
+
+        return redirect()->route('asignar-municipio.index')
+            ->with('success', 'Asignación creada exitosamente.');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(AsignarMunicipioRequest $request): RedirectResponse
+    public function update(Request $request, $id)
     {
-        AsignarMunicipio::create($request->validated());
+        $request->validate([
+            'municipio' => 'required',
+            'periodo' => 'required',
+            'estado' => 'required'
+        ]);
 
-        return Redirect::route('asignar-municipios.index')
-            ->with('success', 'AsignarMunicipio created successfully.');
+        $asignacion = AsignarMunicipio::findOrFail($id);
+        $asignacion->update([
+            'municipio' => $request->municipio,
+            'periodo' => $request->periodo,
+            'estado' => $request->estado
+        ]);
+
+        return redirect()->route('asignar-municipio.index')
+            ->with('success', 'Asignación actualizada exitosamente.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show($id): View
+    public function destroy($id)
     {
-        $asignarMunicipio = AsignarMunicipio::find($id);
-
-        return view('asignar-municipio.show', compact('asignarMunicipio'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id): View
-    {
-        $asignarMunicipio = AsignarMunicipio::find($id);
-
-        return view('asignar-municipio.edit', compact('asignarMunicipio'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(AsignarMunicipioRequest $request, AsignarMunicipio $asignarMunicipio): RedirectResponse
-    {
-        $asignarMunicipio->update($request->validated());
-
-        return Redirect::route('asignar-municipios.index')
-            ->with('success', 'AsignarMunicipio updated successfully');
-    }
-
-    public function destroy($id): RedirectResponse
-    {
-        AsignarMunicipio::find($id)->delete();
-
-        return Redirect::route('asignar-municipios.index')
-            ->with('success', 'AsignarMunicipio deleted successfully');
+        AsignarMunicipio::findOrFail($id)->delete();
+        return redirect()->route('asignar-municipio.index')
+            ->with('success', 'Asignación eliminada exitosamente.');
     }
 }
