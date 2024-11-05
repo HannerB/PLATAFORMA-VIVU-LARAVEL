@@ -8,8 +8,9 @@
                     <div class="container post-user-info text-center rounded">
                         <div class="d-flex justify-content-center">
                             <img class="rounded-circle w-50 circle-border" alt="User Image" width="200px"
-                                src="{{ asset('storage/img/' . $user->img) }}" />
-                        </div>
+                                src="{{ $user->img ? asset('storage/img/' . $user->img) : asset('img/default-user-img.jpg') }}"
+                                onerror="this.src='{{ asset('img/default-user-img.jpg') }}'" />
+                        </div>  
                         <div class="pt-1 text-center">
                             {{ $user->nombres }} {{ $user->apellidos }}
                         </div>

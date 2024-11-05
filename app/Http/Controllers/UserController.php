@@ -8,6 +8,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class UserController extends Controller
@@ -66,7 +67,9 @@ class UserController extends Controller
         if ($request->hasFile('img')) {
             $imagen = $request->file('img');
             $nombreImagen = time() . '_' . $imagen->getClientOriginalName();
-            $rutaImagen = $imagen->storeAs('public/img', $nombreImagen);
+
+            // Almacenar la nueva imagen
+            $imagen->storeAs('public/img', $nombreImagen);
             $user->img = $nombreImagen;
         }
 
@@ -130,9 +133,14 @@ class UserController extends Controller
         $user->email = $request->email;
 
         if ($request->hasFile('img')) {
+            // Eliminar imagen anterior si existe
+            if ($user->img && Storage::disk('public')->exists('img/' . $user->img)) {
+                Storage::disk('public')->delete('img/' . $user->img);
+            }
+
             $imagen = $request->file('img');
             $nombreImagen = time() . '_' . $imagen->getClientOriginalName();
-            $rutaImagen = $imagen->storeAs('public/img', $nombreImagen);
+            $imagen->storeAs('public/img', $nombreImagen);
             $user->img = $nombreImagen;
         }
 
@@ -246,10 +254,26 @@ class UserController extends Controller
     public function mostrarImagen($id)
     {
         $user = User::findOrFail($id);
+
+        if (!$user->img) {
+            // Retornar imagen por defecto
+            $defaultPath = public_path('img/default-user-img.jpg');
+            if (file_exists($defaultPath)) {
+                return response()->file($defaultPath);
+            }
+            abort(404);
+        }
+
         $rutaImagen = storage_path('app/public/img/' . $user->img);
 
         if (file_exists($rutaImagen)) {
             return response()->file($rutaImagen);
+        }
+
+        // Si la imagen del usuario no existe, retornar imagen por defecto
+        $defaultPath = public_path('img/default-user-img.jpg');
+        if (file_exists($defaultPath)) {
+            return response()->file($defaultPath);
         }
 
         abort(404);

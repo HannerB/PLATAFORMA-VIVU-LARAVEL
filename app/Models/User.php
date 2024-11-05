@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * Class User
@@ -182,5 +183,21 @@ class User extends Authenticatable
     public function hasRole($role)
     {
         return $this->tipoUsuario->nombre === $role;
+    }
+
+    public function getProfileImageAttribute()
+    {
+        if ($this->img && Storage::disk('public')->exists('img/' . $this->img)) {
+            return asset('storage/img/' . $this->img);
+        }
+
+        // Verificar si existe la imagen por defecto
+        $defaultImagePath = 'img/default-user-img.jpg';
+        if (file_exists(public_path($defaultImagePath))) {
+            return asset($defaultImagePath);
+        }
+
+        // Si no existe ni la imagen de perfil ni la imagen por defecto
+        return asset('img/default-user-img.jpg'); // Asegúrate de que esta imagen exista
     }
 }

@@ -9,7 +9,7 @@
             <div class="col-md-3">
                 <div class="card-deck">
                     <div class="card" style="width: 14.5rem;">
-                        <img class="card-img-top img-fluid" src="{{ asset('assets/img/imgDashboard1.png') }}"
+                        <img class="card-img-top img-fluid" src="{{ asset('img/dashboard/imgDashboard1.png') }}"
                             alt="Card image cap">
                         <div class="card-body" style="height: 9.5rem;">
                             <h5 class="card-title text-center container">Dashboard No. 1</h5>
@@ -32,7 +32,7 @@
             <div class="col-md-3">
                 <div class="card-deck">
                     <div class="card" style="width: 14.5rem;">
-                        <img class="card-img-top img-fluid" src="{{ asset('assets/img/imgDashboard2.png') }}"
+                        <img class="card-img-top img-fluid" src="{{ asset('img/dashboard/imgDashboard2.png') }}"
                             alt="Card image cap">
                         <div class="card-body" style="height: 9.5rem;">
                             <h5 class="card-title text-center container">Dashboard No. 2</h5>
@@ -54,7 +54,7 @@
             <div class="col-md-3">
                 <div class="card-deck">
                     <div class="card" style="width: 14.5rem;">
-                        <img class="card-img-top img-fluid" src="{{ asset('assets/img/imgDashboard3.png') }}"
+                        <img class="card-img-top img-fluid" src="{{ asset('img/dashboard/imgDashboard3.png') }}"
                             alt="Card image cap">
                         <div class="card-body" style="height: 9.5rem;">
                             <h5 class="card-title text-center container">Dashboard No. 3</h5>
@@ -77,7 +77,7 @@
             <div class="col-md-3">
                 <div class="card-deck">
                     <div class="card" style="width: 14.5rem;">
-                        <img class="card-img-top img-fluid" src="{{ asset('assets/img/imgDashboard4.png') }}"
+                        <img class="card-img-top img-fluid" src="{{ asset('img/dashboard/imgDashboard4.png') }}"
                             alt="Card image cap">
                         <div class="card-body" style="height: 9.5rem;">
                             <h5 class="card-title text-center container">Dashboard No. 4</h5>
