@@ -20,8 +20,8 @@
             <a href="{{ route('cursos.ofertados') }}"><i class="fa fa-cogs fa-fw" aria-hidden="true"></i> Cursos
                 Ofertados</a>
         @elseif(Auth::user()->tipoUsuario->nombre == 'Certificación')
-            {{-- <a href="{{ route('certificaciones.consultar') }}"><i class="fa fa-cogs fa-fw" aria-hidden="true"></i>
-                Certificaciones</a> --}}
+            <a href="{{ route('certificaciones.consultar') }}"><i class="fa fa-cogs fa-fw" aria-hidden="true"></i>
+                Certificaciones</a>
             <a href="{{ route('cursos.ofertados') }}"><i class="fa fa-cogs fa-fw" aria-hidden="true"></i> Cursos
                 ofertados</a>
         @elseif(Auth::user()->tipoUsuario->nombre == 'Aprendiz')

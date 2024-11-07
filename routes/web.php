@@ -84,16 +84,15 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/consultar', [EmprendimientoController::class, 'consultar'])->name('emprendimiento.consultar');
     Route::post('/store', [EmprendimientoController::class, 'store'])->name('emprendimiento.store');
 
-    // TABLERO
+    // ADMIN
     Route::get('/tablero', [AdminController::class, 'tablero'])->name('tablero');
 
     // ASIGNAR-MUNICIPIO
     Route::resource('asignar-responsables', AsignarMunicipioController::class);
+
+    // CERTIFICACIONES
+    Route::get('/certificaciones', [CertificacionController::class, 'consultar'])->name('certificaciones.consultar');
     
-    // ADMIN
-    
-    
-    // Route::get('/certificaciones/consultar', [CertificacionController::class, 'consultar'])->name('certificaciones.consultar')->middleware('role:Certificación');
 });
 
 Route::get('/login', [UserController::class, 'showLoginForm'])->name('login');
