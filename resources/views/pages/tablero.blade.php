@@ -73,12 +73,12 @@
             <!-- Gestión de usuarios -->
             <div class="dashboard-card">
                 <div class="card-icon">
-                    <i class="fa fa-user-circle"></i>
+                    <i class="fa fa-users"></i>
                 </div>
                 <div class="card-content">
-                    <h3>Usuarios</h3>
-                    <p>Administración de usuarios y roles</p>
-                    <a href="{{ route('user.index') }}" class="card-button">
+                    <h3>Gestión de Usuarios</h3>
+                    <p>Administrar usuarios del sistema</p>
+                    <a href="{{ route('admin.usuarios.gestionar') }}" class="card-button">
                         Gestionar
                         <i class="fa fa-arrow-right"></i>
                     </a>
