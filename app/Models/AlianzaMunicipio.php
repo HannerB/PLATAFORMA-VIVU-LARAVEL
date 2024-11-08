@@ -25,8 +25,14 @@ use Illuminate\Database\Eloquent\Model;
  */
 class AlianzaMunicipio extends Model
 {
+
+    protected $table = 'alianza_municipio'; // Especificar el nombre exacto de la tabla
     
+    protected $primaryKey = 'id_alianza'; // Especificar la clave primaria
+
     protected $perPage = 20;
+
+    public $timestamps = false;
 
     /**
      * The attributes that are mass assignable.
@@ -43,7 +49,7 @@ class AlianzaMunicipio extends Model
     {
         return $this->belongsTo(\App\Models\User::class, 'id_User', 'id');
     }
-    
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -51,5 +57,4 @@ class AlianzaMunicipio extends Model
     {
         return $this->belongsTo(\App\Models\Poa::class, 'poa_id', 'id_poa');
     }
-    
 }

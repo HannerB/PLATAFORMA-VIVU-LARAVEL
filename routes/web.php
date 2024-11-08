@@ -93,6 +93,10 @@ Route::middleware(['auth'])->group(function () {
     // ASIGNAR-MUNICIPIO
     Route::resource('asignar-responsables', AsignarMunicipioController::class);
 
+    // ASIGNAR-ENLACES
+    Route::resource('alianza-municipio', AlianzaMunicipioController::class);
+    Route::post('/api/buscar-enlace', [AlianzaMunicipioController::class, 'buscarEnlace']);
+
     // CERTIFICACIONES
     Route::get('/certificaciones', [CertificacionController::class, 'consultar'])->name('certificaciones.consultar');
 });
