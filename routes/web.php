@@ -92,13 +92,20 @@ Route::middleware(['auth'])->group(function () {
 
     // ASIGNAR-MUNICIPIO
     Route::resource('asignar-responsables', AsignarMunicipioController::class);
+    Route::resource('asignar-municipio', AsignarMunicipioController::class);
 
     // ASIGNAR-ENLACES
+    Route::resource('alianza-municipio', AlianzaMunicipioController::class);
     Route::resource('alianza-municipio', AlianzaMunicipioController::class);
     Route::post('/api/buscar-enlace', [AlianzaMunicipioController::class, 'buscarEnlace']);
 
     // CERTIFICACIONES
     Route::get('/certificaciones', [CertificacionController::class, 'consultar'])->name('certificaciones.consultar');
+
+    // CONCERTACIONES
+    Route::resource('concertacione', ConcertacioneController::class);
+    Route::get('/concertaciones/cursos/{id}', [ConcertacioneController::class, 'obtenerCursos'])->name('concertaciones.cursos');
+    Route::post('/concertaciones/buscar-cursos', [ConcertacioneController::class, 'buscarCursos'])->name('concertaciones.buscar-cursos');
 });
 
 Route::get('/login', [UserController::class, 'showLoginForm'])->name('login');
@@ -129,10 +136,7 @@ Route::resource('files-concertacione', FilesConcertacioneController::class);
 Route::resource('file', FileController::class);
 Route::resource('cursos-solicitados', CursosSolicitadoController::class);
 Route::resource('curso', CursoController::class);
-Route::resource('concertacione', ConcertacioneController::class);
 Route::resource('competencia', CompetenciaController::class);
-Route::resource('asignar-municipio', AsignarMunicipioController::class);
-Route::resource('alianza-municipio', AlianzaMunicipioController::class);
 Route::resource('acceso-registro', AccesoRegistroController::class);
 Route::resource('user', UserController::class);
 
