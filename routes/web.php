@@ -40,6 +40,7 @@ Route::middleware(['auth'])->group(function () {
 
     // CURSOS
     Route::get('/cursos-ofertados', [CursoController::class, 'ofertados'])->name('cursos.ofertados');
+    Route::post('/cursos/inscribir', [CursoController::class, 'inscribir'])->name('inscribir.curso')->middleware('auth');
 
     // DASHBOARD
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
