@@ -29,7 +29,7 @@
         @endif
 
         <br>
-        @if (!Auth::user()->alianza)
+        @if (!Auth::user()->hasAlianza())
             <button onclick="ocultar()" class="btn btn-warning">Ocultar / Mostrar Registrar nuevos POA</button>
         @endif
 
@@ -40,11 +40,9 @@
                     <div class="form-group">
                         <label for="municipio">Municipio</label>
                         <select name="municipio" id="municipio" class="form-select" required>
-                            <option value="" selected></option>
-                            @foreach ($municipiosAsignados as $municipio)
-                                <option value="{{ $municipio->id }}">
-                                    {{ $municipio->municipio }} - {{ $municipio->periodo }}
-                                </option>
+                            <option value="" selected>Seleccione un municipio</option>
+                            @foreach ($municipiosAtlantico as $municipio)
+                                <option value="{{ $municipio }}">{{ $municipio }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -125,7 +123,7 @@
                         <td class="gfgcursos">{{ $poa->gestionCursos->count() }}</td>
                         <td class="gfgid" style="display:none">{{ $poa->id_poa }}</td>
                         <td>
-                            @if (!Auth::user()->alianza)
+                            @if (!Auth::user()->hasAlianza())
                                 <button class="gfgselect btn btn-primary btn-xs" data-toggle="modal"
                                     data-target="#staticBackdrop">
                                     <span></span>Editar
@@ -151,5 +149,38 @@
         <!-- Modales -->
         @include('partials.modals.poa.poa_delete')
         @include('partials.modals.poa.poa_edit')
+        @include('partials.modals.poa.poa_enlace')
     </div>
 @endsection
+
+@push('scripts')
+    <script type="text/javascript">
+        $(document).ready(function() {
+
+            // Función de búsqueda
+            var busqueda = document.getElementById('buscar');
+            var table = document.getElementById("tabla").tBodies[0];
+
+            function buscaTabla() {
+                var texto = busqueda.value.toLowerCase();
+                var r = 0;
+                while (row = table.rows[r++]) {
+                    if (row.innerText.toLowerCase().indexOf(texto) !== -1)
+                        row.style.display = null;
+                    else
+                        row.style.display = 'none';
+                }
+            }
+
+            busqueda.addEventListener('keyup', buscaTabla);
+        });
+
+        // Función para ocultar/mostrar formulario
+        function ocultar() {
+            $("#ocultar").toggle();
+        }
+
+        // Ocultar formulario inicialmente
+        $("#ocultar").toggle();
+    </script>
+@endpush

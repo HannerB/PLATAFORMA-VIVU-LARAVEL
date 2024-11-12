@@ -52,7 +52,7 @@ class Poa extends Model
      */
     public function alianzaMunicipios()
     {
-        return $this->hasMany(\App\Models\AlianzaMunicipio::class, 'id_poa', 'poa_id');
+        return $this->hasMany(\App\Models\AlianzaMunicipio::class, 'poa_id', 'id_poa');
     }
 
     /**

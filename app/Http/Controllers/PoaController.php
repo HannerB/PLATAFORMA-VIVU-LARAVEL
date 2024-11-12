@@ -16,20 +16,39 @@ use Illuminate\Support\Facades\DB;
 
 class PoaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    private $municipios = [
+        'BARANOA',
+        'BARRANQUILLA',
+        'CAMPO DE LA CRUZ',
+        'CANDELARIA',
+        'GALAPA',
+        'JUAN DE ACOSTA',
+        'LURUACO',
+        'MALAMBO',
+        'MANATÍ',
+        'PALMAR DE VARELA',
+        'PIOJÓ',
+        'POLONUEVO',
+        'PONEDERA',
+        'PUERTO COLOMBIA',
+        'REPELÓN',
+        'SABANAGRANDE',
+        'SABANALARGA',
+        'SANTA LUCÍA',
+        'SANTO TOMÁS',
+        'SOLEDAD',
+        'SUÁN',
+        'TUBARÁ',
+        'USIACURÍ'
+    ];
+
+
     public function index(Request $request): View
     {
         try {
-            DB::enableQueryLog(); // Habilitar log de queries
+            DB::enableQueryLog();
 
             $user = Auth::user();
-            Log::info('Usuario autenticado:', [
-                'id' => $user->id,
-                'rol' => $user->rol,
-                'nombre' => $user->nombres
-            ]);
 
             // Verificar municipios asignados
             $municipiosQuery = AsignarMunicipio::where('id_responsable', $user->id)
@@ -37,25 +56,13 @@ class PoaController extends Controller
 
             $municipiosAsignados = $municipiosQuery->get();
 
-            Log::info('Query municipios:', [
-                'sql' => $municipiosQuery->toSql(),
-                'bindings' => $municipiosQuery->getBindings(),
-                'count' => $municipiosAsignados->count()
-            ]);
-
             // Obtener POAs
             $poas = $this->getPoasByRole($user);
 
-            Log::info('Queries ejecutadas:', DB::getQueryLog());
+            // Agregar municipios predefinidos
+            $municipiosAtlantico = $this->municipios;
 
-            Log::info('Resultado de consultas:', [
-                'municipios_count' => $municipiosAsignados->count(),
-                'poas_count' => $poas->count(),
-                'municipios' => $municipiosAsignados->toArray(),
-                'poas' => $poas->toArray()
-            ]);
-
-            return view('pages.poa', compact('municipiosAsignados', 'poas'));
+            return view('pages.poa', compact('municipiosAsignados', 'poas', 'municipiosAtlantico'));
         } catch (\Exception $e) {
             Log::error('Error en index:', [
                 'message' => $e->getMessage(),
@@ -64,9 +71,16 @@ class PoaController extends Controller
 
             return view('pages.poa', [
                 'municipiosAsignados' => collect([]),
-                'poas' => collect([])
+                'poas' => collect([]),
+                'municipiosAtlantico' => $this->municipios
             ])->with('error', 'Error al cargar los datos: ' . $e->getMessage());
         }
+    }
+
+    // Método helper para obtener los municipios
+    private function getMunicipiosAtlantico()
+    {
+        return $this->municipios;
     }
 
     /**
@@ -94,17 +108,33 @@ class PoaController extends Controller
             'Ocupacion_Productiva' => 'required',
         ]);
 
-        Poa::create([
-            'id_asignar_municipios' => $request->municipio,
-            'Nombre_Poa' => $request->Nombre_Poa,
-            'Persona_Enlace' => $request->Persona_Enlace,
-            'Telefono_Enlace' => $request->Telefono_Enlace,
-            'Correo_Enlace' => $request->Correo_Enlace,
-            'Poblacion' => $request->Poblacion,
-            'Ocupacion_Productiva' => $request->Ocupacion_Productiva,
-        ]);
+        try {
+            // Primero crear o buscar el asignarMunicipio
+            $asignarMunicipio = AsignarMunicipio::firstOrCreate([
+                'municipio' => $request->municipio,
+                'id_responsable' => Auth::id(),
+                'estado' => 'activo'
+            ], [
+                'periodo' => date('Y'),
+                'fecha_registro' => now()
+            ]);
 
-        return redirect()->route('poa.index')->with('success', 'POA creado exitosamente');
+            // Luego crear el POA
+            Poa::create([
+                'id_asignar_municipios' => $asignarMunicipio->id,
+                'Nombre_Poa' => $request->Nombre_Poa,
+                'Persona_Enlace' => $request->Persona_Enlace,
+                'Telefono_Enlace' => $request->Telefono_Enlace,
+                'Correo_Enlace' => $request->Correo_Enlace,
+                'Poblacion' => $request->Poblacion,
+                'Ocupacion_Productiva' => $request->Ocupacion_Productiva,
+            ]);
+
+            return redirect()->route('poa')->with('success', 'POA creado exitosamente');
+        } catch (\Exception $e) {
+            Log::error('Error al crear POA: ' . $e->getMessage());
+            return redirect()->route('poa')->with('error', 'Error al crear el POA');
+        }
     }
     /**
      * Display the specified resource.
@@ -179,30 +209,22 @@ class PoaController extends Controller
 
             $query = Poa::with(['asignarMunicipio', 'gestionCursos']);
 
-            if ($user->rol === '3') { // Orientador
-                $query->whereHas('asignarMunicipio', function ($q) use ($user) {
-                    $q->where('id_responsable', $user->id)
-                        ->where('estado', 'activo');
-                });
-            } elseif ($user->rol === '1') { // Administrador
-                // No aplicar filtros adicionales
-            } else { // Alianza
+            if ($user->hasAlianza()) {
+                // Modificar la consulta para usar las columnas correctas
                 $query->whereHas('alianzaMunicipios', function ($q) use ($user) {
                     $q->where('id_User', $user->id)
                         ->where('estado', 'activo');
                 });
+            } elseif ($user->rol === '3') {
+                $query->whereHas('asignarMunicipio', function ($q) use ($user) {
+                    $q->where('id_responsable', $user->id)
+                        ->where('estado', 'activo');
+                });
+            } elseif ($user->rol === '1') {
+                // No aplicar filtros adicionales
             }
 
-            $result = $query->orderBy('id_poa', 'DESC')->get();
-
-            Log::info('Query POAs:', [
-                'sql' => $query->toSql(),
-                'bindings' => $query->getBindings(),
-                'count' => $result->count(),
-                'queries' => DB::getQueryLog()
-            ]);
-
-            return $result;
+            return $query->orderBy('id_poa', 'DESC')->get();
         } catch (\Exception $e) {
             Log::error('Error en getPoasByRole:', [
                 'message' => $e->getMessage(),

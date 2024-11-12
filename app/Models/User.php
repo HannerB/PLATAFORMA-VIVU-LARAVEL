@@ -97,7 +97,12 @@ class User extends Authenticatable
      */
     public function alianzaMunicipios()
     {
-        return $this->hasMany(\App\Models\AlianzaMunicipio::class, 'id', 'id_User');
+        return $this->hasMany(\App\Models\AlianzaMunicipio::class, 'id_User', 'id');
+    }
+
+    public function hasAlianza()
+    {
+        return $this->alianzaMunicipios()->where('estado', 'activo')->exists();
     }
 
     /**
