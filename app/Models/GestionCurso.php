@@ -31,11 +31,8 @@ class GestionCurso extends Model
 {
 
     protected $perPage = 20;
-
     protected $table = 'gestion_cursos';
-
-    public $timestamps = false; 
-
+    public $timestamps = false;
     protected $primaryKey = 'id_Gestion_Cursos';
 
     /**
@@ -45,6 +42,22 @@ class GestionCurso extends Model
      */
     protected $fillable = ['id_Gestion_Cursos', 'Municipio_Curso', 'Centro_Formacion', 'Nivel_Formacion', 'Nombre_Curso', 'categoria', 'Mes_Poa', 'Estado_Curso', 'Jornada_Curso', 'Direccion', 'id_nombre_poa', 'fechaRegistro', 'cupo'];
 
+    protected $attributes = [
+        'Estado_Curso' => 'Pendiente',
+        'Jornada_Curso' => 'Por definir',
+        'Direccion' => 'Por definir'
+    ];
+
+    // Boot method para manejar la fecha automáticamente
+    protected static function boot()
+    {
+        parent::boot();
+        static::creating(function ($model) {
+            if (!$model->fechaRegistro) {
+                $model->fechaRegistro = now();
+            }
+        });
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

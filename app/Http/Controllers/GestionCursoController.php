@@ -106,12 +106,53 @@ class GestionCursoController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(GestionCursoRequest $request): RedirectResponse
+    public function store(Request $request)
     {
-        GestionCurso::create($request->validated());
+        try {
+            DB::beginTransaction();
 
-        return Redirect::route('gestion-cursos.index')
-            ->with('success', 'GestionCurso created successfully.');
+            // Obtener el POA con su relación de asignar_municipios
+            $poa = Poa::with('asignarMunicipio')->findOrFail($request->id_nombre_poa);
+
+            // Verificar si existe el municipio
+            if (!$poa->asignarMunicipio || !$poa->asignarMunicipio->municipio) {
+                throw new \Exception('No se pudo obtener el municipio para este POA');
+            }
+
+            // Crear el nuevo curso
+            $gestionCurso = new GestionCurso();
+            $gestionCurso->Centro_Formacion = $request->Centro_Formacion;
+            $gestionCurso->Nivel_Formacion = $request->Nivel_Formacion;
+            $gestionCurso->Nombre_Curso = $request->Nombre_Curso;
+            $gestionCurso->categoria = $request->categoria;
+            $gestionCurso->Mes_Poa = $request->Mes_Poa;
+            $gestionCurso->id_nombre_poa = $request->id_nombre_poa;
+            $gestionCurso->Municipio_Curso = $poa->asignarMunicipio->municipio; // Obtener municipio de la relación
+            $gestionCurso->cupo = $request->cupo ?? 25;
+            $gestionCurso->Estado_Curso = 'Pendiente';
+            $gestionCurso->Jornada_Curso = 'Por definir';
+            $gestionCurso->Direccion = $request->Direccion ?? 'Por definir';
+            $gestionCurso->fechaRegistro = now();
+
+            // Para debug
+            Log::info('Datos del curso a crear:', [
+                'poa_id' => $request->id_nombre_poa,
+                'poa_municipio' => $poa->asignarMunicipio->municipio,
+                'curso_data' => $gestionCurso->toArray()
+            ]);
+
+            $gestionCurso->save();
+
+            DB::commit();
+            return redirect()->back()->with('success', 'Curso registrado exitosamente');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Error registrando curso: ' . $e->getMessage());
+            Log::error('Stack trace: ' . $e->getTraceAsString());
+            return redirect()->back()
+                ->with('error', 'Error al registrar el curso: ' . $e->getMessage())
+                ->withInput();
+        }
     }
 
     /**
