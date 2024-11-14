@@ -25,7 +25,7 @@
                 <i class="fas fa-plus-circle"></i> Registrar Nuevo Curso
             </button>
 
-            @if (Auth::user()->alianza == 2 || $valores > 0)
+            @if (!Auth::user()->hasAlianza())
                 <button class="btn btn-info ml-2" data-toggle="modal" data-target="#concertacionesModal">
                     <i class="fas fa-handshake"></i> Mis Concertaciones
                 </button>
@@ -256,6 +256,7 @@
 
     @include('partials.modals.gestion_curso.gestion_curso_edit')
     @include('partials.modals.gestion_curso.gestion_curso_delete')
+    @include('partials.modals.gestion_curso.concertaciones_modal')
 
 @endsection
 

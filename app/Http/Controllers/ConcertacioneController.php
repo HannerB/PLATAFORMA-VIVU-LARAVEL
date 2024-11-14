@@ -3,11 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Concertacione;
+use App\Models\FilesConcertacione;
+use App\Models\GestionCurso;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Http\Requests\ConcertacioneRequest;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class ConcertacioneController extends Controller
@@ -81,12 +85,61 @@ class ConcertacioneController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(ConcertacioneRequest $request): RedirectResponse
+    public function store(Request $request)
     {
-        Concertacione::create($request->validated());
+        try {
+            DB::beginTransaction();
 
-        return Redirect::route('concertaciones.index')
-            ->with('success', 'Concertacione created successfully.');
+            // Validar la request
+            $request->validate([
+                'Mes_Poa' => 'required',
+                'Vigencia' => 'required|numeric',
+                'cursos' => 'required|array',
+                'acta_concertacion' => 'required|file|mimes:pdf,doc,docx'
+            ]);
+
+            // Generar ID único para la concertación
+            $idConcertacion = DB::table('files_concertaciones')->max('id_file_concertaciones') + 1;
+
+            // Guardar el archivo
+            $archivo = $request->file('acta_concertacion');
+            $nombreArchivo = time() . '_' . $archivo->getClientOriginalName();
+            $ruta = $archivo->storeAs('public/concertaciones', $nombreArchivo);
+
+            // Guardar el registro en files_concertaciones
+            DB::table('files_concertaciones')->insert([
+                'id_file_concertaciones' => $idConcertacion,
+                'mes_concertacion' => $request->Mes_Poa,
+                'vigencia' => $request->Vigencia,
+                'ruta' => $nombreArchivo,
+                'users_id' => Auth::id(),
+                'estado' => 'activo',
+                'tipo' => 'concertacion'
+            ]);
+
+            // Guardar las concertaciones de cada curso
+            foreach ($request->cursos as $cursoId) {
+                DB::table('concertaciones')->insert([
+                    'id_concertacion' => $idConcertacion,
+                    'id_usuario' => Auth::id(),
+                    'id_gestion_cursos' => $cursoId,
+                    'fecha_registro' => now()
+                ]);
+
+                // Actualizar estado del curso
+                DB::table('gestion_cursos')
+                    ->where('id_Gestion_Cursos', $cursoId)
+                    ->update(['Estado_Curso' => 'Concertado acta']);
+            }
+
+            DB::commit();
+            return redirect()->back()->with('success', 'Concertación registrada exitosamente');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Error en concertación: ' . $e->getMessage());
+            return redirect()->back()
+                ->with('error', 'Error al registrar la concertación: ' . $e->getMessage());
+        }
     }
 
     /**

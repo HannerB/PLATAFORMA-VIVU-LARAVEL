@@ -21,7 +21,10 @@ use Illuminate\Database\Eloquent\Model;
  */
 class FilesConcertacione extends Model
 {
-    
+
+    protected $table = 'files_concertaciones';
+    protected $primaryKey = 'id_file_concertaciones';
+    public $timestamps = false;
     protected $perPage = 20;
 
     /**

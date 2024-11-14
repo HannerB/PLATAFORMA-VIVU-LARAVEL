@@ -21,6 +21,9 @@ use Illuminate\Database\Eloquent\Model;
 class Concertacione extends Model
 {
     
+
+    protected $table = 'concertaciones';
+    public $timestamps = false;
     protected $perPage = 20;
 
     /**
