@@ -105,6 +105,13 @@ class User extends Authenticatable
         return $this->alianzaMunicipios()->where('estado', 'activo')->exists();
     }
 
+    public function tieneAlianzaActiva()
+    {
+        return AlianzaMunicipio::where('id_User', $this->id)
+            ->where('estado', 'activo')
+            ->exists();
+    }
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */

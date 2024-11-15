@@ -129,4 +129,65 @@ class AlianzaMunicipioController extends Controller
             'message' => 'Usuario no encontrado'
         ]);
     }
+
+    /**
+     * Verifica si un usuario tiene un enlace de municipio activo
+     * @param int $userId ID del usuario o documento
+     * @param bool $useDocument Indica si se busca por documento en lugar de ID
+     * @return array Respuesta con estado y detalles del enlace
+     */
+    public function verificarEnlace($userId, $useDocument = false)
+    {
+        try {
+            $query = AlianzaMunicipio::with(['user', 'poa'])
+                ->where('estado', 'activo');
+
+            if ($useDocument) {
+                $user = User::where('documento', $userId)->first();
+                if (!$user) {
+                    return [
+                        'success' => false,
+                        'message' => 'Usuario no encontrado',
+                        'hasEnlace' => false
+                    ];
+                }
+                $query->where('id_User', $user->id);
+            } else {
+                $query->where('id_User', $userId);
+            }
+
+            $enlace = $query->first();
+
+            if ($enlace) {
+                return [
+                    'success' => true,
+                    'message' => 'Enlace encontrado',
+                    'hasEnlace' => true,
+                    'enlace' => [
+                        'municipio' => $enlace->municipio,
+                        'periodo' => $enlace->periodo,
+                        'cargo' => $enlace->cargo,
+                        'poblacion' => $enlace->enlace_poblacion,
+                        'poa' => $enlace->poa ? $enlace->poa->Nombre_Poa : null,
+                        'usuario' => $enlace->user ? [
+                            'nombre' => $enlace->user->nombres . ' ' . $enlace->user->apellidos,
+                            'documento' => $enlace->user->documento
+                        ] : null
+                    ]
+                ];
+            }
+
+            return [
+                'success' => true,
+                'message' => 'No se encontró ningún enlace activo',
+                'hasEnlace' => false
+            ];
+        } catch (\Exception $e) {
+            return [
+                'success' => false,
+                'message' => 'Error al verificar enlace: ' . $e->getMessage(),
+                'hasEnlace' => false
+            ];
+        }
+    }
 }

@@ -25,10 +25,18 @@
                 <i class="fas fa-plus-circle"></i> Registrar Nuevo Curso
             </button>
 
-            @if (!Auth::user()->hasAlianza())
-                <button class="btn btn-info ml-2" data-toggle="modal" data-target="#concertacionesModal">
-                    <i class="fas fa-handshake"></i> Mis Concertaciones
-                </button>
+            @if (Auth::user()->tieneAlianzaActiva())
+                {{-- Si tiene alianza, mostrar información de la alianza y el botón de concertaciones --}}
+                @php
+                    $alianzaController = new App\Http\Controllers\AlianzaMunicipioController();
+                    $alianzaInfo = $alianzaController->verificarEnlace(Auth::id());
+                @endphp
+
+                @if ($alianzaInfo['hasEnlace'])
+                    <button class="btn btn-info ml-2" data-toggle="modal" data-target="#concertacionesModal">
+                        <i class="fas fa-handshake"></i> Mis Concertaciones
+                    </button>
+                @endif
             @endif
         </div>
 

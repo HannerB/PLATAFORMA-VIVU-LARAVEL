@@ -29,65 +29,66 @@
         @endif
 
         <br>
-        @if (!Auth::user()->hasAlianza())
+
+        @if (Auth::user()->tieneAlianzaActiva())
             <button onclick="ocultar()" class="btn btn-warning">Ocultar / Mostrar Registrar nuevos POA</button>
-        @endif
 
-        <div class="ocultar" id="ocultar" style="display: none;">
-            <div class="container center-fluid">
-                <form action="{{ route('poa.store') }}" method="POST">
-                    @csrf
-                    <div class="form-group">
-                        <label for="municipio">Municipio</label>
-                        <select name="municipio" id="municipio" class="form-select" required>
-                            <option value="" selected>Seleccione un municipio</option>
-                            @foreach ($municipiosAtlantico as $municipio)
-                                <option value="{{ $municipio }}">{{ $municipio }}</option>
-                            @endforeach
-                        </select>
-                    </div>
+            <div class="ocultar" id="ocultar" style="display: none;">
+                <div class="container center-fluid">
+                    <form action="{{ route('poa.store') }}" method="POST">
+                        @csrf
+                        <div class="form-group">
+                            <label for="municipio">Municipio</label>
+                            <select name="municipio" id="municipio" class="form-select" required>
+                                <option value="" selected>Seleccione un municipio</option>
+                                @foreach ($municipiosAtlantico as $municipio)
+                                    <option value="{{ $municipio }}">{{ $municipio }}</option>
+                                @endforeach
+                            </select>
+                        </div>
 
-                    <div class="form-group">
-                        <label for="Nombre_Poa">Nombre del Poa</label>
-                        <input type="text" class="form-control" id="Nombre_Poa" name="Nombre_Poa"
-                            placeholder="Nombre Poa" required>
-                    </div>
+                        <div class="form-group">
+                            <label for="Nombre_Poa">Nombre del Poa</label>
+                            <input type="text" class="form-control" id="Nombre_Poa" name="Nombre_Poa"
+                                placeholder="Nombre Poa" required>
+                        </div>
 
-                    <div class="form-group">
-                        <label for="Persona_Enlace">Persona o Enlace</label>
-                        <input type="text" class="form-control" id="Persona_Enlace" name="Persona_Enlace"
-                            placeholder="Persona Enlace" required>
-                    </div>
+                        <div class="form-group">
+                            <label for="Persona_Enlace">Persona o Enlace</label>
+                            <input type="text" class="form-control" id="Persona_Enlace" name="Persona_Enlace"
+                                placeholder="Persona Enlace" required>
+                        </div>
 
-                    <div class="form-group">
-                        <label for="Telefono_Enlace">Teléfono del Enlace</label>
-                        <input type="number" class="form-control" id="Telefono_Enlace" name="Telefono_Enlace"
-                            placeholder="Teléfono Enlace" required>
-                    </div>
+                        <div class="form-group">
+                            <label for="Telefono_Enlace">Teléfono del Enlace</label>
+                            <input type="number" class="form-control" id="Telefono_Enlace" name="Telefono_Enlace"
+                                placeholder="Teléfono Enlace" required>
+                        </div>
 
-                    <div class="form-group">
-                        <label for="Correo_Enlace">Correo del Enlace</label>
-                        <input type="email" class="form-control" id="Correo_Enlace" name="Correo_Enlace"
-                            placeholder="Correo Enlace" required>
-                    </div>
+                        <div class="form-group">
+                            <label for="Correo_Enlace">Correo del Enlace</label>
+                            <input type="email" class="form-control" id="Correo_Enlace" name="Correo_Enlace"
+                                placeholder="Correo Enlace" required>
+                        </div>
 
-                    <div class="form-group">
-                        <label for="Poblacion">Población del Poa</label>
-                        <input type="text" class="form-control" id="Poblacion" name="Poblacion" placeholder="Población"
-                            required>
-                    </div>
+                        <div class="form-group">
+                            <label for="Poblacion">Población del Poa</label>
+                            <input type="text" class="form-control" id="Poblacion" name="Poblacion"
+                                placeholder="Población" required>
+                        </div>
 
-                    <div class="form-group">
-                        <label for="Ocupacion_Productiva">Ocupación Productiva</label>
-                        <input type="text" class="form-control" id="Ocupacion_Productiva" name="Ocupacion_Productiva"
-                            placeholder="Ocupación Productiva" required>
-                    </div>
+                        <div class="form-group">
+                            <label for="Ocupacion_Productiva">Ocupación Productiva</label>
+                            <input type="text" class="form-control" id="Ocupacion_Productiva" name="Ocupacion_Productiva"
+                                placeholder="Ocupación Productiva" required>
+                        </div>
 
-                    <button type="submit" class="btn btn-primary">Registrar</button>
-                </form>
+                        <button type="submit" class="btn btn-primary">Registrar</button>
+                    </form>
+                </div>
+                <br>
             </div>
-            <br>
-        </div>
+        @endif
 
         <br><br>
 
@@ -123,15 +124,23 @@
                         <td class="gfgcursos">{{ $poa->gestionCursos->count() }}</td>
                         <td class="gfgid" style="display:none">{{ $poa->id_poa }}</td>
                         <td>
-                            @if (!Auth::user()->hasAlianza())
-                                <button class="gfgselect btn btn-primary btn-xs" data-toggle="modal"
-                                    data-target="#staticBackdrop">
-                                    <span></span>Editar
-                                </button>
-                                <button class="gfgdelete btn btn-danger btn-xs" data-toggle="modal"
-                                    data-target="#staticBackdropDelete">
-                                    <span></span>Borrar
-                                </button>
+                            @if (Auth::user()->tieneAlianzaActiva())
+                                {{-- Si tiene alianza, mostrar información de la alianza y el botón de concertaciones --}}
+                                @php
+                                    $alianzaController = new App\Http\Controllers\AlianzaMunicipioController();
+                                    $alianzaInfo = $alianzaController->verificarEnlace(Auth::id());
+                                @endphp
+
+                                @if (Auth::user()->tieneAlianzaActiva())
+                                    <button class="gfgselect btn btn-primary btn-xs" data-toggle="modal"
+                                        data-target="#staticBackdrop">
+                                        <span></span>Editar
+                                    </button>
+                                    <button class="gfgdelete btn btn-danger btn-xs" data-toggle="modal"
+                                        data-target="#staticBackdropDelete">
+                                        <span></span>Borrar
+                                    </button>
+                                @endif
                             @endif
                             <a href="{{ route('poa.gestion-cursos', $poa->id_poa) }}" class="btn btn-warning btn-xs">
                                 <span></span>Ver Cursos
@@ -179,8 +188,5 @@
         function ocultar() {
             $("#ocultar").toggle();
         }
-
-        // Ocultar formulario inicialmente
-        $("#ocultar").toggle();
     </script>
 @endpush

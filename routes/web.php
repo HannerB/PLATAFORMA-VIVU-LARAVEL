@@ -95,10 +95,15 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('asignar-responsables', AsignarMunicipioController::class);
     Route::resource('asignar-municipio', AsignarMunicipioController::class);
 
-    // ASIGNAR-ENLACES
+    // ALIANZA-MUNICIPIO
     Route::resource('alianza-municipio', AlianzaMunicipioController::class);
     Route::resource('alianza-municipio', AlianzaMunicipioController::class);
     Route::post('/api/buscar-enlace', [AlianzaMunicipioController::class, 'buscarEnlace']);
+    Route::get('/verificar-alianza/{id}', [AlianzaMunicipioController::class, 'verificarEnlace']);
+    Route::get('/verificar-alianza-documento/{documento}', function ($documento) {
+        return app(AlianzaMunicipioController::class)->verificarEnlace($documento, true);
+    });
+
 
     // CERTIFICACIONES
     Route::get('/certificaciones', [CertificacionController::class, 'consultar'])->name('certificaciones.consultar');
