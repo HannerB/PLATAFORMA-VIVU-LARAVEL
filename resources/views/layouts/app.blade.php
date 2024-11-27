@@ -14,11 +14,13 @@
     <link rel="stylesheet" href="{{ asset('css/general.css') }}">
     <link rel="stylesheet" href="{{ asset('css/grupos.css') }}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css"
         integrity="sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi" crossorigin="anonymous">
     <script src="http://cdn.tutorialzine.com/misc/enhance/v2.js" async></script>
     <script src="{{ asset('js/main.js') }}"></script>
     <script src="{{ asset('js/general.js') }}"></script>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     @yield('extra_styles')
 </head>
 
