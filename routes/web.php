@@ -110,7 +110,7 @@ Route::middleware(['auth'])->group(function () {
 
     // CONCERTACIONES
     Route::resource('concertacione', ConcertacioneController::class);
-    Route::get('/concertaciones/cursos/{id}', [ConcertacioneController::class, 'obtenerCursos'])->name('concertaciones.cursos');
+    Route::get('/concertaciones/{id}/cursos', [ConcertacioneController::class, 'obtenerCursos'])->name('concertaciones.cursos');
     Route::post('/concertaciones/buscar-cursos', [ConcertacioneController::class, 'buscarCursos'])->name('concertaciones.buscar-cursos');
     Route::post('/concertaciones/store', [ConcertacioneController::class, 'store'])->name('concertaciones.store');
 });

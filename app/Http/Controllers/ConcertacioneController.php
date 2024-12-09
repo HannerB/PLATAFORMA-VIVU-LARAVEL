@@ -63,15 +63,42 @@ class ConcertacioneController extends Controller
 
     public function obtenerCursos($id)
     {
-        $cursos = DB::table('concertaciones')
-            ->join('gestion_cursos', 'concertaciones.id_gestion_cursos', '=', 'gestion_cursos.id_Gestion_Cursos')
-            ->where('concertaciones.id_concertacion', $id)
-            ->select('gestion_cursos.*')
-            ->get();
+        try {
+            $cursos = DB::table('concertaciones')
+                ->join('gestion_cursos', 'concertaciones.id_gestion_cursos', '=', 'gestion_cursos.id_Gestion_Cursos')
+                ->where('concertaciones.id_concertacion', $id)
+                ->select(
+                    'gestion_cursos.Municipio_Curso',
+                    'gestion_cursos.Centro_Formacion',
+                    'gestion_cursos.Nombre_Curso',
+                    'gestion_cursos.Estado_Curso',
+                    'gestion_cursos.Mes_Poa',
+                    'gestion_cursos.categoria'
+                )
+                ->get();
 
-        return view('modals.concertaciones.cursos', compact('cursos'));
+            // Log para debugging
+            Log::info('Cursos encontrados para concertación ' . $id . ':', ['cursos' => $cursos]);
+
+            if ($cursos->isEmpty()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No hay cursos asociados a esta concertación'
+                ]);
+            }
+
+            return response()->json([
+                'success' => true,
+                'data' => $cursos
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Error al obtener cursos: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al cargar los cursos: ' . $e->getMessage()
+            ]);
+        }
     }
-
     /**
      * Show the form for creating a new resource.
      */
