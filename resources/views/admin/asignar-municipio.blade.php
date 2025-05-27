@@ -76,10 +76,12 @@
                         </div>
                     </div>
 
-                    <div class="mt-3">
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fa fa-save"></i> Registrar
-                        </button>
+                    <div class="row mt-4">
+                        <div class="col-md-12">
+                            <button type="submit" class="btn btn-primary">
+                                Registrar
+                            </button>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -123,11 +125,11 @@
                                     <td>
                                         <button class="btn btn-sm btn-primary" data-toggle="modal"
                                             data-target="#editModal{{ $asignacion->id }}">
-                                            <i class="fa fa-edit"></i> Editar
+                                            Editar
                                         </button>
                                         <button class="btn btn-sm btn-danger" data-toggle="modal"
                                             data-target="#deleteModal{{ $asignacion->id }}">
-                                            <i class="fa fa-trash"></i> Borrar
+                                            Borrar
                                         </button>
                                     </td>
                                 </tr>
@@ -151,16 +153,16 @@
 @endsection
 
 @push('scripts')
-    <script>
-        document.getElementById('buscar').addEventListener('keyup', function() {
-            let texto = this.value.toLowerCase();
-            let tabla = document.getElementById('tabla').getElementsByTagName('tbody')[0];
-            let filas = tabla.getElementsByTagName('tr');
+<script>
+    document.getElementById('buscar').addEventListener('keyup', function() {
+        let texto = this.value.toLowerCase();
+        let tabla = document.getElementById('tabla').getElementsByTagName('tbody')[0];
+        let filas = tabla.getElementsByTagName('tr');
 
-            for (let fila of filas) {
-                let contenido = fila.textContent.toLowerCase();
-                fila.style.display = contenido.includes(texto) ? '' : 'none';
-            }
-        });
-    </script>
+        for (let fila of filas) {
+            let contenido = fila.textContent.toLowerCase();
+            fila.style.display = contenido.includes(texto) ? '' : 'none';
+        }
+    });
+</script>
 @endpush
