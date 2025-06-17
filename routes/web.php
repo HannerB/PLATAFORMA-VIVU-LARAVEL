@@ -26,6 +26,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PlaneacionController;
 use App\Http\Controllers\CertificacionController;
+use App\Http\Controllers\ValidacionActasController;
 
 Auth::routes();
 
@@ -113,6 +114,19 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/concertaciones/{id}/cursos', [ConcertacioneController::class, 'obtenerCursos'])->name('concertaciones.cursos');
     Route::post('/concertaciones/buscar-cursos', [ConcertacioneController::class, 'buscarCursos'])->name('concertaciones.buscar-cursos');
     Route::post('/concertaciones/store', [ConcertacioneController::class, 'store'])->name('concertaciones.store');
+
+    // Rutas de validación (solo para usuarios con permisos)
+    Route::post('/actas/{id}/validar', [ValidacionActasController::class, 'validar'])
+        ->name('actas.validar')
+        ->middleware('can:validate-actas');
+
+    // Ruta de descarga (solo actas validadas)
+    Route::get('/actas/{id}/descargar', [ValidacionActasController::class, 'descargar'])
+        ->name('actas.descargar');
+
+    // Ver detalle del acta
+    Route::get('/actas/{id}/detalle', [ValidacionActasController::class, 'verDetalle'])
+        ->name('actas.detalle');
 });
 
 Route::get('/login', [UserController::class, 'showLoginForm'])->name('login');
